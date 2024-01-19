@@ -3,6 +3,8 @@ const cors = require('cors');
 const PORT = process.env.PORT || 5000;
 const { getHandler, postHandler } = require('./controllers/apiController');
 const { chatBotHandler } = require('./controllers/chatBotHandler');
+const { lectureHandler } = require('./controllers/lectureHandler');
+const { savedLectureHandler } = require('./controllers/savedLectureHandler');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -20,6 +22,8 @@ app.use(
 app.use('/api/getTest', getHandler);
 app.use('/api/postTest', postHandler);
 app.use('/api/chatBot', chatBotHandler);
+app.use('/api/saved-lecture', savedLectureHandler);
+app.use('/api/lecture', lectureHandler);
 
 server.listen(PORT, async () => {
   console.log(`Server running on PORT ${PORT}`);
