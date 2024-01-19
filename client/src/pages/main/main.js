@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { get, post } from '../../service/api/http';
 
 const Main = () => {
   const [data, setData] = useState();
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/api/getTest')
+    get('getTest')
       .then((res) => {
         setData(res.data.message);
       })
@@ -17,8 +17,7 @@ const Main = () => {
 
   const postData = () => {
     // POST 요청
-    axios
-      .post('http://localhost:5000/api/postTest', { key: 'value' })
+    post('postTest', { key: 'value' })
       .then((res) => {
         console.log(res.data.message);
         setData(res.data.message);
@@ -30,7 +29,7 @@ const Main = () => {
 
   return (
     <div>
-      <div>Hello 이공즈ss</div>
+      <Typography variant="h2">Hello 이공즈ss</Typography>
       <div>{data}</div>
       <TextField id="standard-basic" label="이공즈" variant="standard" />
       <Button variant="contained" onClick={postData}>
