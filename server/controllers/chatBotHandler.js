@@ -1,5 +1,7 @@
 const chatBotHandler = (req, res) => {
-  res.json({ message: '아무 말 ㅋㅋ' });
+  setTimeout(() => {
+    res.json({ message: '아무 말 ㅋㅋ' });
+  }, 3000);
 };
 
 module.exports = { chatBotHandler };

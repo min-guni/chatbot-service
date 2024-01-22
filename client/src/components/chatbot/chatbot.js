@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Input, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Input,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { postChatBot } from '../../service/chatbot/chatBotService';
 
 const ChatBot = () => {
-  const [chatList, setChatList] = useState([{ message: 'tlqkf', id: 0 }]);
+  const [chatList, setChatList] = useState([{ message: 'tlqkf', id: 0 }]); // id : 0 -> me 1 -> Bot
   const [loading, setLoading] = useState(false);
 
-  const sendQuery = (event) => {
-    let message = event.target.value;
-    if (event.keyCode === 13 && !loading && message.trim() !== '') {
+  const sendQuery = (message) => {
+    if (!loading && message.trim() !== '') {
       setLoading(true);
 
       setChatList((chatList) => [
@@ -25,7 +34,6 @@ const ChatBot = () => {
             return updatedList;
           });
           setLoading(false);
-          event.target.value = '';
         })
         .catch((err) => {
           console.log(err);
@@ -34,14 +42,44 @@ const ChatBot = () => {
   };
 
   return (
-    <div>
-      {chatList.map((message, index) => (
-        <Box key={index} variant={message.id === 0 ? 'green' : 'blue'}>
-          {message.message}
-        </Box>
-      ))}
-      <div>{loading === true ? 'true' : 'false'} 안녕</div>
-      <Input label="내용을 입력하세요" onKeyDown={sendQuery} disabled={loading}></Input>
+    <div style={{ maxWidth: 400, margin: 'auto', maxHeight: 600 }}>
+      <Paper elevation={3} style={{ height: 400, overflowY: 'auto' }}>
+        <List>
+          {chatList.map((message, index) => (
+            <ListItem
+              key={index}
+              style={{ justifyContent: message.id === 0 ? 'flex-end' : 'flex-start' }}
+            >
+              <ListItemText
+                style={{
+                  borderRadius: 15,
+                  backgroundColor: message.sender === 0 ? '#4CAF50' : '#2196F3',
+                  color: 'white',
+                  padding: '8px',
+                }}
+              >
+                <Typography>{message.message}</Typography>
+              </ListItemText>
+            </ListItem>
+          ))}
+        </List>
+        <TextField
+          label="메시지 입력"
+          variant="outlined"
+          fullWidth
+          disabled={loading}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && e.target.value.trim() !== '') {
+              sendQuery(e.target.value);
+              e.target.value = '';
+            }
+          }}
+          style={{
+            position: 'sticky',
+            bottom: 0,
+          }}
+        />
+      </Paper>
     </div>
   );
 };

@@ -22,7 +22,7 @@ app.use(
 app.use('/api/getTest', getHandler);
 app.use('/api/postTest', postHandler);
 app.use('/api/chatBot', chatBotHandler);
-app.use('/api/saved-lecture', savedLectureHandler);
+app.use('/api/saved-lecture', savedLectureHandler); // 나중에 user 하면 바꿀 예정
 app.use('/api/lecture', lectureHandler);
 
 server.listen(PORT, async () => {

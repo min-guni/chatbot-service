@@ -1,11 +1,11 @@
 import { get, getWithParam, post } from '../api/http';
 
 export function loadUserLecture() {
-  return get('saved-lecture');
+  return get('saved-lecture'); // 나중에 user 하면 바꿀 예정
 }
 
 export function saveTable(data) {
-  return post('saved-lecture', data);
+  return post('saved-lecture', data); // 나중에 user 하면 바꿀 예정
 }
 
 export function loadAllLecture() {
