@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[47]:
+# In[24]:
 
 
 import json
@@ -17,7 +17,7 @@ import random
 from html import unescape
 
 
-# In[48]:
+# In[25]:
 
 
 ID = ''
@@ -29,16 +29,10 @@ driver.find_element(By.NAME, 'password').send_keys(PW)
 driver.find_element(By.XPATH, '//input[@value="에브리타임 로그인"]').click()
 
 
-# In[49]:
+# In[26]:
 
 
 def extract_text(tags):
-    """
-    주어진 BeautifulSoup 태그 리스트에서 텍스트를 추출하여 연결합니다.
-    
-    :param tags: BeautifulSoup 객체들의 리스트
-    :return: 연결된 텍스트 문자열
-    """
     full_text = ""
     for tag in tags:
         # 태그에서 텍스트 추출
@@ -56,7 +50,7 @@ def extract_text(tags):
     return full_text.strip()  # 마지막 공백 제거
 
 
-# In[50]:
+# In[27]:
 
 
 def extract_comments(soup):
@@ -108,19 +102,22 @@ def extract_comments(soup):
     return comments
 
 
-# In[51]:
+# In[34]:
 
 
 result_dict = {
     "title": [],
     "detail": [],
-    "comments": [],  # 'comments' 키를 추가
+    "likes": [],
+    "comments_count": [],
+    "scraps": [],
+    "comments": [],
     "url": [],
     "timestamp": []
 }
 
 
-# In[52]:
+# In[35]:
 
 
 file_path = "url_test.json"
@@ -136,22 +133,24 @@ for url in data:
     
     title = extract_text(soup.find_all('h2', class_='large'))
     detail = extract_text(soup.find('p', class_='large'))
-
+    likes = extract_text(soup.find('li', class_= "vote"))
+    comments_count = extract_text(soup.find('li', class_="comment"))
+    scraps = extract_text(soup.find('li', class_='scrap'))
     comments = extract_comments(soup)
+    timestamp = extract_text(soup.find('time', class_='large'))
 
     result_dict["title"].append(title)
     result_dict["detail"].append(detail)
+    result_dict["likes"].append(likes)
+    result_dict["comments_count"].append(comments_count)
+    result_dict["scraps"].append(scraps)
     result_dict["url"].append(url)
     result_dict["comments"].append(comments)
+    result_dict["timestamp"].append(timestamp)
+    
 
 
-# In[53]:
-
-
-result_dict
-
-
-# In[54]:
+# In[33]:
 
 
 file_path="everytime_computer_data.json"
