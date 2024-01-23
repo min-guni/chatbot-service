@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { get, post } from '../../service/api/http';
+import ChatBot from '../../components/chatbot/chatbot';
 
 const Main = () => {
   const [data, setData] = useState();
@@ -35,6 +36,7 @@ const Main = () => {
       <Button variant="contained" onClick={postData}>
         Post Test
       </Button>
+      <ChatBot></ChatBot>
     </div>
   );
 };
