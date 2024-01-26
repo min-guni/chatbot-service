@@ -8,4 +8,7 @@ class User(BaseModel):
     pwd: str
     id: str
 
+class UserOut(User):
+    id : str
+
 
