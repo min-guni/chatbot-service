@@ -4,11 +4,9 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
-    name: str
-    pwd: str
-    id: str
+    username: str
+    password: str
+
 
 class UserOut(User):
-    id : str
-
-
+    username: str

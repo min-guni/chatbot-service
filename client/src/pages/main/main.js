@@ -1,42 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
-import axios from 'axios';
-import { get, post } from '../../service/api/http';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ChatBot from '../../components/chatbot/chatbot';
-
+import Dashboard from '../../components/dashboard/dashboard';
+import EditTable from '../../components/timetable/editTable';
 const Main = () => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    get('getTest')
-      .then((res) => {
-        setData(res.data.message);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  const postData = () => {
-    // POST 요청
-    post('postTest', { key: 'value' })
-      .then((res) => {
-        console.log(res.data.message);
-        setData(res.data.message);
-      })
-      .catch((err) => {
-        console.error('Error submitting data:', err);
-      });
-  };
+  const [menu, setMenu] = useState('ChatBot');
 
   return (
     <div>
-      <Typography variant="h2">Hello 이공즈ss</Typography>
-      <div>{data}</div>
-      <TextField id="standard-basic" label="이공즈" variant="standard" />
-      <Button variant="contained" onClick={postData}>
-        Post Test
-      </Button>
-      <ChatBot></ChatBot>
+      {menu === 'ChatBot' && <ChatBot />}
+      {menu === 'Dashboard' && <Dashboard />}
+      {menu === 'Timetable' && <EditTable />}
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation
+          showLabels
+          value={menu}
+          onChange={(event, newValue) => {
+            setMenu(newValue);
+          }}
+        >
+          <BottomNavigationAction label="ChatBot" value="ChatBot" icon={<SmartToyIcon />} />
+          <BottomNavigationAction label="Dashboard" value="Dashboard" icon={<DashboardIcon />} />
+          <BottomNavigationAction
+            label="Timetable"
+            value="Timetable"
+            icon={<EventAvailableIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
     </div>
   );
 };

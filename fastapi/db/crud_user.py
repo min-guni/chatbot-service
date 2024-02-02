@@ -7,15 +7,14 @@ from core.security import get_password_hash, verify_password
 from models.user import User
 
 
-def get_by_id(db: Session, *, id: str) -> Optional[User]:
-    return db.query(User).filter(User.id == id).first()
+def get_by_id(db: Session, *, username: str) -> Optional[User]:
+    return db.query(User).filter(User.username == username).first()
 
 
 def create(db: Session, *, obj_in: User) -> User:
     db_obj = User(
-        id=obj_in.id,
-        password=get_password_hash(obj_in.password),
-        full_name=obj_in.full_name
+        username=obj_in.username,
+        password=get_password_hash(obj_in.password)
     )
     db.add(db_obj)
     db.commit()
@@ -43,8 +42,8 @@ def update(db: Session, *, db_obj: User, obj_in: Union[User, Dict[str, Any]]) ->
     return db_obj
 
 
-def authenticate(db: Session, *, id: str, password: str) -> Optional[User]:
-    user = get_by_id(db, id=id)
+def authenticate(db: Session, *, username: str, password: str) -> Optional[User]:
+    user = get_by_id(db, username=username)
     if not user:
         return None
     if not verify_password(password, user.hashed_password):

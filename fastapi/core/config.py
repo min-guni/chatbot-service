@@ -15,12 +15,8 @@ class Settings(BaseSettings):
     DB_USERNAME: str = 'admin'
     DB_PWD: str = 'dlrhdwm!'
     DB_NAME: str = 'user'
-    SQLALCHEMY_DATABASE_URI: str
-
-    @field_validator('SQLALCHEMY_DATABASE_URI')
-    @classmethod
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]):
-        return f"mysql+pymysql://{values.get('DB_USERNAME')}:{values.get('DB_PWD')}@{v}/{values.get('DB_NAME')}"
+    SQLALCHEMY_DATABASE_URI: str = "ysu-team-003-rds.cnmgd1eiu1rn.ap-northeast-2.rds.amazonaws.com"
 
 
-settings = Settings(SQLALCHEMY_DATABASE_URI = "ysu-team-003-rds.cnmgd1eiu1rn.ap-northeast-2.rds.amazonaws.com")
+
+settings = Settings()
