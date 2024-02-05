@@ -46,7 +46,6 @@ const ChatBot = () => {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [paperHeight, setPaperHeight] = useState(window.innerHeight - 117);
 
   const sendQuery = (message) => {
     if (!loading && message.trim() !== '') {
@@ -73,24 +72,16 @@ const ChatBot = () => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setPaperHeight(window.innerHeight - 117);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // 컴포넌트 언마운트 시 리스너 제거
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <div style={{ margin: 'auto' }}>
       <Paper
         elevation={0}
-        style={{ overflowY: 'auto', height: paperHeight, paddingLeft: 200, paddingRight: 200 }}
+        style={{
+          overflowY: 'auto',
+          height: `calc(100vh - 117px)`,
+          paddingLeft: 200,
+          paddingRight: 200,
+        }}
       >
         <List>
           {chatList.map((message, index) => (
@@ -138,7 +129,6 @@ const ChatBot = () => {
           ))}
         </List>
         <TextField
-          multiline
           value={inputValue}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && inputValue.trim() !== '') {
@@ -146,7 +136,7 @@ const ChatBot = () => {
                 setSnackBarOpen(true);
                 return;
               }
-              sendQuery();
+              sendQuery(inputValue);
               e.target.value = '';
             }
           }}

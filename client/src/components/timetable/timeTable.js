@@ -9,8 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 
+import { lightBlue, blueGrey, lightGreen } from '@mui/material/colors';
+
 const TimeTable = ({ lectureList }) => {
-  const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  const daysOfWeek = ['월', '화', '수', '목', '금'];
+  const dayMap = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
+  const colorList = [lightBlue[300], lightGreen[300]];
+
   const timeSlots = [
     '9:00-10:00',
     '10:00-11:00',
@@ -23,18 +28,24 @@ const TimeTable = ({ lectureList }) => {
     '17:00-18:00',
   ];
 
-  const parseLectureTime = (lectureTime) => {
-    const dayTimePairs = lectureTime.split(' ');
-    const parsedData = [];
+  const timeList = Array.from({ length: 5 }, () => Array(9).fill(null));
 
-    for (let i = 0; i < dayTimePairs.length; i += 2) {
-      parsedData.push({ day: dayTimePairs[i], time: dayTimePairs[i + 1] });
-    }
+  const parseLectureTime = (lectureTime, index) => {
+    const dayTimePairs = lectureTime.split('/');
 
-    return parsedData;
+    dayTimePairs.forEach((pairString) => {
+      const time = pairString.split(/[^0-9]/).filter(Boolean);
+      time.map((time) => {
+        timeList[dayMap[pairString[0]]][parseInt(time, 10) - 1] = index;
+      });
+    });
   };
 
   const renderTimeTable = () => {
+    lectureList.map((lecture, index) => {
+      parseLectureTime(lecture.lecture_time, index);
+    });
+
     return (
       <TableContainer component={Paper}>
         <Table>
@@ -49,14 +60,10 @@ const TimeTable = ({ lectureList }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {timeSlots.map((timeSlot) => (
+            {timeSlots.map((timeSlot, time_index) => (
               <TableRow key={timeSlot} style={{ height: '9vh' }}>
                 <TableCell>{timeSlot}</TableCell>
-                {daysOfWeek.map((day) => (
-                  <TableCell key={`${day}-${timeSlot}`} align="center">
-                    {renderLecturesForCell(day, timeSlot)}
-                  </TableCell>
-                ))}
+                {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
               </TableRow>
             ))}
           </TableBody>
@@ -66,25 +73,32 @@ const TimeTable = ({ lectureList }) => {
   };
 
   // 시간표에 수업을 렌더링하는 함수
-  const renderLecturesForCell = (day, timeSlot) => {
-    const lectures = lectureList.filter((lec) => {
-      const parsedLectureTime = parseLectureTime(lec.lecture_time);
-      return parsedLectureTime.some((dayTime) => dayTime.day === day && dayTime.time === timeSlot);
-    });
+  const renderLecturesForCell = (day_index, time_index) => {
+    if (timeList[day_index][time_index] === null) {
+      return <TableCell key={`${day_index}-${time_index}`}></TableCell>;
+    }
+    let message = '';
+    if (
+      time_index === 0 ||
+      timeList[day_index][time_index - 1] !== timeList[day_index][time_index]
+    ) {
+      console.log(day_index, time_index);
+      console.log(timeList);
+      message = lectureList[timeList[day_index][time_index]].lecture_name;
+    }
 
-    return lectures.map((lecture, index) => (
-      <Typography key={index}>{lecture.lecture_name}</Typography>
-    ));
+    return (
+      <TableCell
+        key={`${day_index}-${time_index}`}
+        align="center"
+        sx={{ backgroundColor: colorList[timeList[day_index][time_index]] }}
+      >
+        <Typography>{message}</Typography>
+      </TableCell>
+    );
   };
 
-  return (
-    <div>
-      <Typography variant="h5" align="center" gutterBottom>
-        학교 시간표
-      </Typography>
-      {renderTimeTable()}
-    </div>
-  );
+  return <div>{renderTimeTable()}</div>;
 };
 
 export default TimeTable;
