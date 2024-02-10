@@ -25,6 +25,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+
+import { debounce } from 'lodash';
 import { AccountCircle } from '@mui/icons-material';
 import { blueGrey, lightBlue } from '@mui/material/colors';
 import TelegramIcon from '@mui/icons-material/Telegram';
@@ -86,13 +88,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const EditTable = () => {
   const theme = useTheme();
-  const [userLectureList, setUserLectureList] = useState([
-    { lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' },
-  ]);
-  const [lectureList, setLectureList] = useState([
-    { lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' },
-    { lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' },
-  ]);
+  const [userLectureList, setUserLectureList] = useState([]);
+  const [lectureList, setLectureList] = useState([]);
+  const [priorityLecture, setPriorityLecture] = useState(null);
 
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -103,37 +101,28 @@ const EditTable = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    loadUserLecture()
-      .then((res) => {
-        setUserLectureList([{ lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' }]);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    loadAllLecture()
-      .then((res) => {
-        //setLectureList(res.data);
-        setLectureList([
-          { lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' },
-          { lecture_name: 'Math', lecture_time: 'Mon 9:00-10:00' },
-        ]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   // user effect와 setInteveral로 1분간격으로 save 날리기 https://mingule.tistory.com/65
-  const search = (event) => {
-    searchLectures(event) //param을 넣어야됨 event대신
+  const textChange = (query) => {
+    search(query);
+  };
+
+  const search = debounce((query) => {
+    console.log(query);
+    if (query.trim() === '') {
+      setLectureList([]);
+      return;
+    }
+    const param = { q: query };
+    console.log(param);
+    searchLectures(param) //param을 넣어야됨 event대신
       .then((res) => {
         setLectureList(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, 300);
 
   const insertLecture = (event) => {
     // 같은 시간에 있는지 없는지 확인
@@ -183,30 +172,17 @@ const EditTable = () => {
         <TextField
           sx={{ width: '100%' }}
           fullwidth
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && e.target.value.trim() !== '') {
-              search(e);
-              e.target.value = '';
-            }
+          onChange={(e) => {
+            textChange(e.target.value);
           }}
         />
         <Box>
-          <LectureList
-            lectureList={[
-              { lecture_name: 'Math', lecture_time: '월3,4,5/수4,5,6', professor: '윤민균' },
-              { lecture_name: 'English', lecture_time: '화3,4/목4', professor: '윤민균' },
-            ]}
-          />
+          <LectureList lectureList={lectureList} updateInstanceLecture={setPriorityLecture} />
         </Box>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <TimeTable
-          lectureList={[
-            { lecture_name: 'Math', lecture_time: '월3,4,5/수4,5,6' },
-            { lecture_name: 'English', lecture_time: '화3,4/목4' },
-          ]}
-        />
+        <TimeTable lectureList={userLectureList} priority_lecture={priorityLecture} />
       </Main>
     </div>
   );

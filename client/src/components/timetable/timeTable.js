@@ -9,12 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import { lightBlue, blueGrey, lightGreen } from '@mui/material/colors';
+import { lightBlue, blueGrey, lightGreen, grey, cyan, brown } from '@mui/material/colors';
 
-const TimeTable = ({ lectureList }) => {
+const TimeTable = ({ lectureList, priority_lecture }) => {
   const daysOfWeek = ['월', '화', '수', '목', '금'];
   const dayMap = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
-  const colorList = [lightBlue[300], lightGreen[300]];
+  const colorList = [grey[300], lightBlue[300], lightGreen[300], cyan[300], brown[300]];
 
   const timeSlots = [
     '9:00-10:00',
@@ -36,15 +36,20 @@ const TimeTable = ({ lectureList }) => {
     dayTimePairs.forEach((pairString) => {
       const time = pairString.split(/[^0-9]/).filter(Boolean);
       time.map((time) => {
-        timeList[dayMap[pairString[0]]][parseInt(time, 10) - 1] = index;
+        console.log(time);
+        timeList[dayMap[pairString[0]]][parseInt(time, 10) - 1] = index + 1;
       });
     });
   };
 
   const renderTimeTable = () => {
     lectureList.map((lecture, index) => {
-      parseLectureTime(lecture.lecture_time, index);
+      parseLectureTime(lecture.schedule, index);
     });
+    console.log(priority_lecture);
+    if (priority_lecture !== null) {
+      parseLectureTime(priority_lecture.schedule, -1);
+    }
 
     return (
       <TableContainer component={Paper}>
@@ -82,9 +87,11 @@ const TimeTable = ({ lectureList }) => {
       time_index === 0 ||
       timeList[day_index][time_index - 1] !== timeList[day_index][time_index]
     ) {
-      console.log(day_index, time_index);
-      console.log(timeList);
-      message = lectureList[timeList[day_index][time_index]].lecture_name;
+      if (timeList[day_index][time_index] === 0) {
+        message = priority_lecture.course_name;
+      } else {
+        message = lectureList[timeList[day_index][time_index] - 1].course_name;
+      }
     }
 
     return (
