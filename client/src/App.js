@@ -2,9 +2,11 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/main/main';
 import ChatBot from './components/chatbot/chatbot';
-import LogIn from './pages/session/login/login';
+import LogIn from './pages/session/signin';
 import { ThemeProvider } from '@mui/material';
 import { Theme } from './theme/theme';
+import SignIn from './pages/session/signin';
+import SignUp from './pages/session/signup';
 
 function App() {
   return (
@@ -12,8 +14,8 @@ function App() {
       <ThemeProvider theme={Theme}>
         <Routes>
           <Route path="/" element={<Main />}></Route>
-          <Route path="/chat" element={<ChatBot />}></Route>
-          <Route path="/login" element={<LogIn />}></Route>
+          <Route path="/signin" element={<SignIn />}></Route>
+          <Route path="/signup" element={<SignUp />}></Route>
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

@@ -1,18 +1,19 @@
 from typing import Any, Dict, Optional, Union
 
+import sqlalchemy
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from core.security import get_password_hash, verify_password
-from models.user import User
+from models import sqlmodels, user
 
 
-def get_by_id(db: Session, *, username: str) -> Optional[User]:
-    return db.query(User).filter(User.username == username).first()
+def get_by_id(db: Session, *, username: str) -> Optional[sqlmodels.User]:
+    return db.query(sqlmodels.User).filter_by(username=username).first()
 
 
-def create(db: Session, *, obj_in: User) -> User:
-    db_obj = User(
+def create(db: Session, *, obj_in: user.User) -> sqlmodels.User:
+    db_obj = sqlmodels.User(
         username=obj_in.username,
         password=get_password_hash(obj_in.password)
     )
@@ -22,7 +23,7 @@ def create(db: Session, *, obj_in: User) -> User:
     return db_obj
 
 
-def update(db: Session, *, db_obj: User, obj_in: Union[User, Dict[str, Any]]) -> User:
+def update(db: Session, *, db_obj: sqlmodels.User, obj_in: Union[user.User, Dict[str, Any]]) -> sqlmodels.User:
     if isinstance(obj_in, dict):
         update_data = obj_in
     else:
@@ -42,7 +43,7 @@ def update(db: Session, *, db_obj: User, obj_in: Union[User, Dict[str, Any]]) ->
     return db_obj
 
 
-def authenticate(db: Session, *, username: str, password: str) -> Optional[User]:
+def authenticate(db: Session, *, username: str, password: str) -> Optional[sqlmodels.User]:
     user = get_by_id(db, username=username)
     if not user:
         return None

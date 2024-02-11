@@ -7,6 +7,9 @@ class User(BaseModel):
     username: str
     password: str
 
+    class Config:
+        orm_mode = True
+
 
 class UserOut(User):
     username: str

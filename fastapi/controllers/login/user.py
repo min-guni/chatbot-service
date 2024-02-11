@@ -17,6 +17,7 @@ router = APIRouter()
 def create_user(session: SessionDep, user_in: User) -> Any:
     print(user_in.username, user_in.password)
     user = get_by_id(session, username=user_in.username)
+    print(user)
     if user:
         raise HTTPException(
             status_code=400,

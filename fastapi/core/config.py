@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "test"
     DB_USERNAME: str = 'admin'
     DB_PWD: str = 'dlrhdwm!'
-    DB_NAME: str = 'user'
+    DB_NAME: str = 'users'
     SQLALCHEMY_DATABASE_URI: str = "ysu-team-003-rds.cnmgd1eiu1rn.ap-northeast-2.rds.amazonaws.com"
     ELASTIC_CID = 'https://ysu-001.es.us-east-2.aws.elastic-cloud.com'
     ELASTIC_CU = "elastic"

@@ -5,6 +5,10 @@ from controllers.login import login, user
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
+from db.engine import engine
+from models import sqlmodels
+
+sqlmodels.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

@@ -9,17 +9,21 @@ from pydantic import ValidationError
 from sqlmodel import Session
 
 from core.config import settings
-from db.engine import engine
+from db.engine import engine, SessionLocal, Base
 from models.token import TokenPayload
 from models.user import User
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/access-token")
 
 
-def get_db() -> Generator:
-    with Session(engine) as session:
-        yield session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 ALGORITHM = "HS256"
