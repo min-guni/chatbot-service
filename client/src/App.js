@@ -7,15 +7,16 @@ import { ThemeProvider } from '@mui/material';
 import { Theme } from './theme/theme';
 import SignIn from './pages/session/signin';
 import SignUp from './pages/session/signup';
+import Auth from './service/auth';
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={Theme}>
         <Routes>
-          <Route path="/" element={<Main />}></Route>
-          <Route path="/signin" element={<SignIn />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
+          <Route exact path="/" element={Auth(Main, false)}></Route>
+          <Route exact path="/signin" element={Auth(SignIn, false)}></Route>
+          <Route exact path="/signup" element={Auth(SignUp, false)}></Route>
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

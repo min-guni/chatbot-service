@@ -46,27 +46,3 @@ def update_user_me(
 def read_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
     return current_user
 
-
-"""
-@router.put(
-    "/{user_id}",
-    dependencies=[Depends(get_current_user)],
-    response_model=UserOut,
-)
-def update_user(
-        *,
-        session: SessionDep,
-        user_id: int,
-        user_in: User,
-) -> Any:
-    
-
-    user = session.get(User, user_id)
-    if not user:
-        raise HTTPException(
-            status_code=404,
-            detail="The user with this username does not exist in the system",
-        )
-    user = update(session, db_obj=user, obj_in=user_in)
-    return user
-"""

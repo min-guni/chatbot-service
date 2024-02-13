@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const LectureList = ({ lectureList, updateInstanceLecture }) => {
+const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
 
   const [openInfo, setOpenInfo] = useState(false);
@@ -28,17 +28,22 @@ const LectureList = ({ lectureList, updateInstanceLecture }) => {
     console.log(index);
   };
 
+  const [isHover, setIsHover] = useState(true);
+
   useEffect(() => {
     setExpandedDiv(false);
   }, [lectureList]);
 
   return (
-    <div>
+    <div style={{ height: 60 + `vh`, marginTop: 20 }}>
       {lectureList.map((lecture, index) => (
         <Accordion
           key={index}
           expanded={expandedDiv === index}
           onChange={handleExpandChange(index)}
+          sx={{
+            backgroundColor: isHover ? 'rgba(255, 255, 255, 0)' : 'rgba(255, 255, 255, 1)', // Adjust the alpha value for transparency
+          }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -58,10 +63,13 @@ const LectureList = ({ lectureList, updateInstanceLecture }) => {
             </Button>
             <Button
               variant="outlined"
-              onClick={() => handleOpen(index)}
+              onClick={() => {
+                setUserLectureList((list) => [...list, lecture]);
+                handleOpen(index);
+              }}
               onMouseOver={() => {
                 updateInstanceLecture(lecture);
-                console.log(lecture);
+                setIsHover(true);
               }}
               onMouseOut={() => updateInstanceLecture(null)}
             >

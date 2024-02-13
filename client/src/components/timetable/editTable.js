@@ -6,20 +6,12 @@ import {
 } from '../../service/timeTable/timeTableService';
 import TimeTable from './timeTable';
 import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Divider,
-  Drawer,
-  Grid,
-  IconButton,
+  AppBar,
+  Backdrop,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Paper,
-  styled,
   TextField,
   Toolbar,
   Typography,
@@ -27,64 +19,8 @@ import {
 } from '@mui/material';
 
 import { debounce } from 'lodash';
-import { AccountCircle } from '@mui/icons-material';
-import { blueGrey, lightBlue } from '@mui/material/colors';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-
-import MuiAppBar from '@mui/material/AppBar';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import SearchIcon from '@mui/icons-material/Search';
 import LectureList from './lectureList';
-
-const drawerWidth = 400;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
 
 const EditTable = () => {
   const theme = useTheme();
@@ -93,13 +29,6 @@ const EditTable = () => {
   const [priorityLecture, setPriorityLecture] = useState(null);
 
   const [open, setOpen] = useState(false);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   // user effect와 setInteveral로 1분간격으로 save 날리기 https://mingule.tistory.com/65
   const textChange = (query) => {
@@ -122,7 +51,7 @@ const EditTable = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, 300);
+  }, 1);
 
   const insertLecture = (event) => {
     // 같은 시간에 있는지 없는지 확인
@@ -137,53 +66,70 @@ const EditTable = () => {
     <div style={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" align="center">
-            학교 시간표
+            TIME TABLE
           </Typography>
+          <TextField
+            hiddenLabel
+            fullwidth
+            variant="standard"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onClick={() => {
+              setOpen(true);
+            }}
+          />
         </Toolbar>
       </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
+      <TimeTable lectureList={userLectureList} priority_lecture={priorityLecture} />
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        fullWidth="lg"
+        maxWidth="lg"
+        PaperProps={{
+          style: {
+            backgroundColor:
+              priorityLecture !== null ? 'rgba(255, 255, 255, 0)' : 'rgba(255, 255, 255, 1)', // Adjust the alpha value for transparency
           },
         }}
-        variant="persistent"
-        anchor="left"
-        open={open}
       >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <TextField
-          sx={{ width: '100%' }}
-          fullwidth
-          onChange={(e) => {
-            textChange(e.target.value);
-          }}
-        />
-        <Box>
-          <LectureList lectureList={lectureList} updateInstanceLecture={setPriorityLecture} />
-        </Box>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <TimeTable lectureList={userLectureList} priority_lecture={priorityLecture} />
-      </Main>
+        <DialogTitle>Search Lectures</DialogTitle>
+        <DialogContent dividers>
+          <TextField
+            hiddenLabel
+            fullWidth
+            variant="standard"
+            onChange={(e) => {
+              textChange(e.target.value);
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <LectureList
+            lectureList={lectureList}
+            updateInstanceLecture={setPriorityLecture}
+            setUserLectureList={setUserLectureList}
+          ></LectureList>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

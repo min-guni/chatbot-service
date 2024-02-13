@@ -52,7 +52,7 @@ const TimeTable = ({ lectureList, priority_lecture }) => {
     }
 
     return (
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ width: '100vw' }}>
         <Table>
           <TableHead>
             <TableRow>

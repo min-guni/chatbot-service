@@ -11,7 +11,7 @@ from sqlmodel import Session
 from core.config import settings
 from db.engine import engine, SessionLocal, Base
 from models.token import TokenPayload
-from models.user import User
+from models.sqlmodels import User
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

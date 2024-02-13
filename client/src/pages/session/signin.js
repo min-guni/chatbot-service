@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -12,15 +13,24 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { blue } from '@mui/material/colors';
+import { signin } from '../../service/sign/signInService';
+import { Dialog, DialogContent, DialogContentText } from '@mui/material';
+import { useState } from 'react';
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const [openErrorInfo, setOpenErrorInfo] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    signin(data)
+      .then((res) => {
+        console.log(res.data);
+        navigate('/');
+      })
+      .catch((err) => {
+        setOpenErrorInfo(true);
+      });
   };
 
   return (
@@ -73,6 +83,20 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </Box>
+        <Dialog
+          open={openErrorInfo}
+          onClose={() => {
+            setOpenErrorInfo(false);
+          }}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              아이디 혹은 비밀번호가 일치하지 않습니다.
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </Box>
     </Container>
   );
