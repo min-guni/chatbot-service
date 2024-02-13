@@ -18,7 +18,7 @@ def search_lecture(q: str):  # 강의 탐색
     }
     fields = ["course_name", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
               "grade", "major", "semester", "subject_type"]
-    index = 'course'
+    index = 'course_final'
     # query parameter
     resp = es.search(index=index,
                      query=query,
@@ -43,9 +43,9 @@ def get_detail(id: str):
             }
         }
     }
-    index = "course"
+    index = "course_final"
     fields = ["course_name", "course_desc", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
-              "grade", "major", "semester", "url", "subject_type"]
+              "grade", "major", "semester", "url", "subject_type", "reviews"]
 
     resp = es.search(index=index, query=query, fields=fields, source=False)
     print(resp)
