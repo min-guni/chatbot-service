@@ -1,6 +1,6 @@
 from typing import Union
 
-from sqlalchemy import Boolean, Column, ForeignKey, String, DateTime, Text
+from sqlalchemy import Boolean, Column, ForeignKey, String, DateTime, Text, Integer
 from sqlalchemy.orm import relationship
 
 from db.engine import Base
@@ -17,23 +17,25 @@ class User(Base):
 class Lecture(Base):
     __tablename__ = "lectures"
 
-    username = Column(String, ForeignKey("users.id"))
-    course_name = Column(String)
-    course_code = Column(String, index=True)
-    schedule = Column(String)
-    instructor = Column(String)
-    campus = Column(String)
-    caution = Column(String)
-    classroom = Column(String)
-    grade = Column(String)
-    major = Column(String)
-    semester = Column(String)
-    subject_type = Column(String)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(255), ForeignKey("users.username"))
+    course_name = Column(String(255))
+    course_code = Column(String(255), index=True)
+    schedule = Column(String(255))
+    instructor = Column(String(255))
+    campus = Column(String(255))
+    caution = Column(String(255))
+    classroom = Column(String(255))
+    grade = Column(String(255))
+    major = Column(String(255))
+    semester = Column(String(255))
+    subject_type = Column(String(255))
 
 
 class Chat(Base):
     __tablename__ = "chats"
 
-    username = Column(String, ForeignKey("users.ud"))
-    message = Column(Text)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(255), ForeignKey("users.username"))
+    message = Column(Text(255))
     time = Column(DateTime, index=True)

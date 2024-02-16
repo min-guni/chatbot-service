@@ -5,7 +5,7 @@ export function loadUserLecture() {
 }
 
 export function saveTable(data) {
-  return post('saved-lecture', data); // 나중에 user 하면 바꿀 예정
+  return post('saved-lecture', data);
 }
 
 export function loadAllLecture() {

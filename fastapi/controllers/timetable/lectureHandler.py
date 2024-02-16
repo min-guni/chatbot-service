@@ -4,7 +4,7 @@ from typing import Union, Dict, Annotated
 from db.engine import es
 from models.lecture import Lecture
 
-from fastapi.core.security import CurrentUser
+from core.security import CurrentUser
 
 router = APIRouter()
 
