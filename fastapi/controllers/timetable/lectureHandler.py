@@ -4,6 +4,8 @@ from typing import Union, Dict, Annotated
 from db.engine import es
 from models.lecture import Lecture
 
+from fastapi.core.security import CurrentUser
+
 router = APIRouter()
 
 
@@ -52,9 +54,9 @@ def get_detail(id: str):
     return {"lecture": resp}
 
 
-@router.get("/{id}", response_model=list[Lecture])
-def get_saved_lecture(id: str):
-    # 현재 current user와 id 가 일치하는지 확인
+@router.get("/", response_model=list[Lecture])
+def get_saved_lecture(current_user: CurrentUser):
+    CurrentUser.username
     # 저장된 강의 리스트 return
     return []
 

@@ -2,7 +2,7 @@ from time import sleep
 import logging
 
 from fastapi import APIRouter
-from models.message import Message
+from models.chat import Message
 
 router = APIRouter()
 

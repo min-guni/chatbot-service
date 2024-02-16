@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={Theme}>
         <Routes>
-          <Route exact path="/" element={Auth(Main, false)}></Route>
+          <Route exact path="/" element={Auth(Main, true)}></Route>
           <Route exact path="/signin" element={Auth(SignIn, false)}></Route>
           <Route exact path="/signup" element={Auth(SignUp, false)}></Route>
         </Routes>
