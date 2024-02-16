@@ -15,3 +15,7 @@ export function loadAllLecture() {
 export function searchLectures(param) {
   return getWithParam('lecture/', param);
 }
+
+export function loadLectureDetail(id) {
+  return get('lecture/detail/' + id);
+}
