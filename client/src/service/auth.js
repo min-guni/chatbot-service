@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authenticate, get } from './api/http';
+import { getWithToken } from './api/http';
 
 export default function Auth(SpecificComponent, loginRequired) {
   function AuthenticationCheck(props) {
@@ -15,8 +15,9 @@ export default function Auth(SpecificComponent, loginRequired) {
         navigate('/signin');
         return;
       }
-      authenticate(token).catch(() => {
+      getWithToken('user/me', token).catch((err) => {
         if (loginRequired) {
+          console.log(err);
           navigate('/signin');
         }
       });

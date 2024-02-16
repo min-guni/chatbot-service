@@ -15,7 +15,7 @@ def get_by_id(db: Session, *, username: str):
     return db.query(sqlmodels.Chat).filter_by(username=username).order_by(sqlmodels.Chat.time.desc()).all()
 
 
-def save_lecture(db: Session, username : str, obj_in: chat.Chat):
+def save(db: Session, username : str, obj_in: chat.Chat):
     db_obj = sqlmodels.Chat(username = username,message=obj_in.message,time=datetime.now())
     db.add(db_obj)
     db.commit()

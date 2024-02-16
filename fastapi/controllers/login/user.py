@@ -15,9 +15,7 @@ router = APIRouter()
     "/", response_model=UserOut
 )
 def create_user(session: SessionDep, user_in: User) -> Any:
-    print(user_in.username, user_in.password)
     user = get_by_id(session, username=user_in.username)
-    print(user)
     if user:
         raise HTTPException(
             status_code=400,
@@ -28,21 +26,10 @@ def create_user(session: SessionDep, user_in: User) -> Any:
     return user
 
 
-@router.put("/me", response_model=UserOut)
-def update_user_me(
-        *, session: SessionDep, body: User, current_user: CurrentUser
+@router.get("/me", response_model=str)
+def get_user_me(
+        *, session: SessionDep, current_user: CurrentUser
 ) -> Any:
-    current_user_data = jsonable_encoder(current_user)
-    user_in = User(**current_user_data)
-    if body.password is not None:
-        user_in.password = body.password
-    if body.name is not None:
-        user_in.full_name = body.name
-    user = update(session, db_obj=user_in, obj_in=user_in)
-    return user
+    return current_user.username
 
-
-@router.get("/me", response_model=UserOut)
-def read_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
-    return current_user
 

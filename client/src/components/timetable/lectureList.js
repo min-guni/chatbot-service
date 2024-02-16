@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList }) => {
+const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
 
   const [openInfo, setOpenInfo] = useState(false);
@@ -64,7 +64,8 @@ const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList })
             <Button
               variant="outlined"
               onClick={() => {
-                setUserLectureList((list) => [...list, lecture]);
+                setUserLectureList((list) => [...list, lecture]); //여기서 체크 해야됨;;
+                saveLecture(lecture);
                 handleOpen(index);
               }}
               onMouseOver={() => {

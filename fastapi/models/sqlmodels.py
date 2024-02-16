@@ -18,6 +18,7 @@ class Lecture(Base):
     __tablename__ = "lectures"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    lecture_id = Column(String(255))
     username = Column(String(255), ForeignKey("users.username"))
     course_name = Column(String(255))
     course_code = Column(String(255), index=True)

@@ -1,11 +1,7 @@
-import { get, getWithParam, post } from '../api/http';
+import { deleteWithToken, get, getWithParam, getWithToken, post, postWithToken } from '../api/http';
 
-export function loadUserLecture() {
-  return get('saved-lecture'); // 나중에 user 하면 바꿀 예정
-}
-
-export function saveTable(data) {
-  return post('saved-lecture', data);
+export function loadUserLecture(token) {
+  return getWithToken('lecture/me', token);
 }
 
 export function loadAllLecture() {
@@ -18,4 +14,12 @@ export function searchLectures(param) {
 
 export function loadLectureDetail(id) {
   return get('lecture/detail/' + id);
+}
+
+export function saveLecture(lecture, token) {
+  return postWithToken('lecture/', lecture, token);
+}
+
+export function deleteLecture(lecture_id, token) {
+  return deleteWithToken('lecture/', lecture_id, token);
 }

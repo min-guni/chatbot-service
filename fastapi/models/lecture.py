@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 
 class Lecture(BaseModel):
+    id : str
     course_name : str
     course_code : str
     subject_type : str

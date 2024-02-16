@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   loadAllLecture,
   loadUserLecture,
+  saveLecture,
   searchLectures,
 } from '../../service/timeTable/timeTableService';
 import TimeTable from './timeTable';
@@ -21,16 +22,28 @@ import {
 import { debounce } from 'lodash';
 import SearchIcon from '@mui/icons-material/Search';
 import LectureList from './lectureList';
+import { useNavigate } from 'react-router-dom';
 
 const EditTable = () => {
-  const theme = useTheme();
+  const navigate = useNavigate();
   const [userLectureList, setUserLectureList] = useState([]);
   const [lectureList, setLectureList] = useState([]);
   const [priorityLecture, setPriorityLecture] = useState(null);
 
   const [open, setOpen] = useState(false);
 
-  // user effect와 setInteveral로 1분간격으로 save 날리기 https://mingule.tistory.com/65
+  useEffect(() => {
+    let token = localStorage.getItem('access_token');
+    console.log(token);
+    loadUserLecture(token)
+      .then((res) => {
+        console.log(res.data);
+        setUserLectureList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const textChange = (query) => {
     search(query);
   };
@@ -53,9 +66,13 @@ const EditTable = () => {
       });
   }, 1);
 
-  const insertLecture = (event) => {
-    // 같은 시간에 있는지 없는지 확인
-    // 같은 시간에 있으면 창을 띄움
+  const save = (lecture) => {
+    let token = localStorage.getItem('access_token');
+    console.log(token);
+    saveLecture(lecture, token).catch((err) => {
+      console.log(err);
+      navigate('/signin');
+    });
   };
 
   const deleteLecture = (event) => {
@@ -127,6 +144,7 @@ const EditTable = () => {
             lectureList={lectureList}
             updateInstanceLecture={setPriorityLecture}
             setUserLectureList={setUserLectureList}
+            saveLecture={save}
           ></LectureList>
         </DialogContent>
       </Dialog>

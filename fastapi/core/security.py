@@ -51,20 +51,7 @@ SessionDep = Annotated[Session, Depends(get_db)]
 TokenDep = Annotated[str, Depends(oauth2_scheme)]
 
 
-def verify_token(token: TokenDep):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-    return username
+
 
 
 def get_password_hash(password: str) -> str:
@@ -72,17 +59,19 @@ def get_password_hash(password: str) -> str:
 
 
 def get_current_user(session: SessionDep, token: TokenDep) -> User:  # DB가 생기면 db도 Argument 만들어줌
+    print(token)
+    print(settings.SECRET_KEY)
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[ALGORITHM]
         )
-        token_data = TokenPayload(**payload)
+        print(payload)
     except (JWTError, ValidationError):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    user = session.get(User, token_data.sub)
+    user = session.get(User, payload.get('sub'))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
