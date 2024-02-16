@@ -13,3 +13,11 @@ export function getWithParam(link, param) {
 export function post(link, data) {
   return axios.post(url + link, data);
 }
+
+export function authenticate(token) {
+  return axios.get(url + 'user/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

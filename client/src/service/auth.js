@@ -1,19 +1,25 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { get } from './api/http';
+import { authenticate, get } from './api/http';
 
 export default function Auth(SpecificComponent, loginRequired) {
   function AuthenticationCheck(props) {
     let navigate = useNavigate();
+    let token = localStorage.getItem('access_token');
 
     useEffect(() => {
-      get('user/me')
-        .then((response) => {})
-        .catch((err) => {
-          if (loginRequired) {
-            navigate('/signin');
-          }
-        });
+      if (!loginRequired) {
+        return;
+      }
+      if (token === null && loginRequired) {
+        navigate('/signin');
+        return;
+      }
+      authenticate(token).catch(() => {
+        if (loginRequired) {
+          navigate('/signin');
+        }
+      });
     }, []);
 
     return <SpecificComponent {...props} />;
