@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     ELASTIC_CID = 'https://ysu-001.es.us-east-2.aws.elastic-cloud.com'
     ELASTIC_CU = "elastic"
     ELASTIC_PU = "0tNWkVNJToMYRyZxdlEE636S"
+    OPEN_AI_KEY = "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"
+    FILE_ID = "file-23uEmh0gElMlY0JJWMjjv1FU"
+    FINE_TUNED_MODEL = "ft:gpt-3.5-turbo-0613:personal::8pvSm5cb"
+    JOB_ID = "ftjob-Zd4SUqjBtxhb8tDHWOSXUSzZ"
 
 
 

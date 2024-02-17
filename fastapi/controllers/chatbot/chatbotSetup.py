@@ -2,36 +2,27 @@ from sentence_transformers import SentenceTransformer
 from elasticsearch import Elasticsearch
 from openai import OpenAI
 from dotenv import load_dotenv
-import os
+from core.config import settings
+from db.engine import es
 
 load_dotenv()
 
-OPEN_AI_KEY=os.getenv("OPEN_AI_KEY")
-FILE_ID=os.getenv("FILE_ID")
-FINE_TUNED_MODEL=os.getenv("FINE_TUNED_MODEL")
-JOB_ID=os.getenv("JOB_ID")
-
-ES_CLOUD_ID=os.getenv("ES_CLOUD_ID")
-ES_USER=os.getenv("ES_USER")
-ES_PWD=os.getenv("ES_PWD")
-
-# Elasticsearch 클라이언트 인스턴스 생성, basic_auth 사용
-es_client = Elasticsearch(
-    cloud_id=ES_CLOUD_ID,
-    basic_auth=(ES_USER, ES_PWD),
-    timeout=10
-)
+OPEN_AI_KEY = settings.OPEN_AI_KEY
+FILE_ID = settings.FILE_ID
+FINE_TUNED_MODEL = settings.FINE_TUNED_MODEL
+JOB_ID = settings.JOB_ID
 
 openAI_client = OpenAI(
     api_key=OPEN_AI_KEY
 )
 
-setenceTransform_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
+sentence_transform_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 chatGPT_model = FINE_TUNED_MODEL
 index_name = "elastictest_vector_final"
 
+
 def top_n_similarity(query):
-    query_embedding = setenceTransform_model.encode(query).tolist()
+    query_embedding = sentence_transform_model.encode(query).tolist()
 
     query_body = {
         "size": 10,
@@ -52,9 +43,10 @@ def top_n_similarity(query):
         }
     }
 
-    es_response = es_client.search(index=index_name, body=query_body)
+    es_response = es.search(index=index_name, body=query_body)
 
     return es_response
+
 
 def create_gpt_prompt(es_response):
     prompt = "당신은 연세대학교 에브리타임 컴퓨터과학과 게시판 도우미 챗봇입니다. 주어진 관련된 정보로 학생의 질문에 자세히 답변해주세요. 다음은 학생의 질문과 관련된 문서의 제목과 내용입니다:\n\n"
@@ -63,7 +55,7 @@ def create_gpt_prompt(es_response):
         detail = hit['_source'].get('detail', '')
         comments = hit['_source'].get('comments', [])
         prompt += f"제목: {title}\n내용: {detail}\n\n"
-        #prompt += "댓글:\n"
+        # prompt += "댓글:\n"
         for comment in comments:
             prompt += f"{comment['Comment']}\n"
         prompt += "\n"
@@ -71,12 +63,13 @@ def create_gpt_prompt(es_response):
     print(prompt)
     return prompt
 
+
 # OpenAI GPT 챗봇 호출
 def call_gpt(es_response, query):
     prompt = create_gpt_prompt(es_response) + query
     try:
         gpt_response = openAI_client.chat.completions.create(
-            model="gpt-3.5-turbo",#model=FINE_TUNED_MODEL, 
+            model="gpt-3.5-turbo",  # model=FINE_TUNED_MODEL,
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": query}
@@ -93,5 +86,3 @@ def call_gpt(es_response, query):
 def rag(query):
     es_response = top_n_similarity(query)
     return call_gpt(es_response, query)
-
-

@@ -9,6 +9,8 @@ from core.security import CurrentUser, SessionDep
 
 from db.crud_lecture import save
 
+from db.crud_lecture import delete
+
 router = APIRouter()
 
 
@@ -74,6 +76,11 @@ def get_saved_lecture(session: SessionDep, current_user: CurrentUser):
     print(lecture_list)
     print(obj_out)
     return obj_out
+
+@router.delete("/{id}", response_model=str)
+def delete_lecture(session: SessionDep, current_user : CurrentUser, id : str):
+    delete(session,current_user.username,id)
+    return "deleted"
 
 
 def search_lecture_english(q: str):  # 강의 탐색

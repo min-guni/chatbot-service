@@ -25,3 +25,9 @@ def save(db: Session, username: str, obj_in: lecture.Lecture):
     db.add(db_obj)
     db.commit()
     return db_obj
+
+
+def delete(db : Session, username : str, lecture_id : str):
+    db.query(sqlmodels.Lecture).filter_by(lecture_id=lecture_id, username=username).delete()
+    db.commit()
+    return

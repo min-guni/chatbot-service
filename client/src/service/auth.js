@@ -15,14 +15,17 @@ export default function Auth(SpecificComponent, loginRequired) {
         navigate('/signin');
         return;
       }
-      getWithToken('user/me').catch((err) => {
-        if (loginRequired) {
-          console.log(err);
-          navigate('/signin');
-        }
-      });
+      getWithToken('user/me')
+        .then((res) => {
+          localStorage.setItem('username', res.data);
+        })
+        .catch((err) => {
+          if (loginRequired) {
+            console.log(err);
+            navigate('/signin');
+          }
+        });
     }, []);
-
     return <SpecificComponent {...props} />;
   }
 

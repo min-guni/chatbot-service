@@ -33,8 +33,7 @@ const EditTable = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log(token);
-    loadUserLecture(token)
+    loadUserLecture()
       .then((res) => {
         console.log(res.data);
         setUserLectureList(res.data);
@@ -66,8 +65,7 @@ const EditTable = () => {
   }, 1);
 
   const save = (lecture) => {
-    console.log(token);
-    saveLecture(lecture, token).catch((err) => {
+    saveLecture(lecture).catch((err) => {
       console.log(err);
       navigate('/signin');
     });

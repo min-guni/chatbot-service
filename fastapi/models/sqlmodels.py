@@ -38,5 +38,6 @@ class Chat(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(255), ForeignKey("users.username"))
+    is_chatbot = Column(Boolean)
     message = Column(Text(255))
     time = Column(DateTime, index=True)

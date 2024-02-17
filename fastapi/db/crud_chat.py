@@ -12,12 +12,11 @@ from models import chat
 
 
 def get_by_id(db: Session, *, username: str):
-    return db.query(sqlmodels.Chat).filter_by(username=username).order_by(sqlmodels.Chat.time.desc()).all()
+    return db.query(sqlmodels.Chat).filter_by(username=username).order_by(sqlmodels.Chat.time.asc()).all()
 
 
-def save(db: Session, username : str, obj_in: chat.Chat):
-    db_obj = sqlmodels.Chat(username = username,message=obj_in.message,time=datetime.now())
+def save(db: Session, username : str, obj_in: chat.Chat, is_chatbot : bool):
+    db_obj = sqlmodels.Chat(username = username,message=obj_in.message,time=datetime.now(), is_chatbot=is_chatbot)
     db.add(db_obj)
     db.commit()
-    db.refresh(db_obj)
     return db_obj

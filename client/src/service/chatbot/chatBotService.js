@@ -1,5 +1,10 @@
-import { post } from '../api/http';
+import { getWithToken, postWithToken } from '../api/http';
 
 export function postChatBot(data) {
-  return post('chatBot', data);
+  data = { message: data };
+  return postWithToken('chatbot/', data);
+}
+
+export function getChat() {
+  return getWithToken('chatbot/');
 }
