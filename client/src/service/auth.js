@@ -15,7 +15,7 @@ export default function Auth(SpecificComponent, loginRequired) {
         navigate('/signin');
         return;
       }
-      getWithToken('user/me', token).catch((err) => {
+      getWithToken('user/me').catch((err) => {
         if (loginRequired) {
           console.log(err);
           navigate('/signin');

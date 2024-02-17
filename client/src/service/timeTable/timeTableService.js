@@ -1,7 +1,7 @@
 import { deleteWithToken, get, getWithParam, getWithToken, post, postWithToken } from '../api/http';
 
 export function loadUserLecture(token) {
-  return getWithToken('lecture/me', token);
+  return getWithToken('lecture/me');
 }
 
 export function loadAllLecture() {
@@ -17,9 +17,9 @@ export function loadLectureDetail(id) {
 }
 
 export function saveLecture(lecture, token) {
-  return postWithToken('lecture/', lecture, token);
+  return postWithToken('lecture/', lecture);
 }
 
 export function deleteLecture(lecture_id, token) {
-  return deleteWithToken('lecture/', lecture_id, token);
+  return deleteWithToken('lecture/', lecture_id);
 }

@@ -33,7 +33,6 @@ const EditTable = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let token = localStorage.getItem('access_token');
     console.log(token);
     loadUserLecture(token)
       .then((res) => {
@@ -67,7 +66,6 @@ const EditTable = () => {
   }, 1);
 
   const save = (lecture) => {
-    let token = localStorage.getItem('access_token');
     console.log(token);
     saveLecture(lecture, token).catch((err) => {
       console.log(err);
