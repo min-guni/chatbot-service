@@ -49,25 +49,51 @@ def save_lecture(lecture: Lecture, session: SessionDep, current_user: CurrentUse
 
 @router.get("/detail/{id}")
 def get_detail(id: str):
-    query = {
+
+    course_query = {
         "term" : {
             "id": {
                 "value" : id
             }
         }
     }
-    index = "course_final"
-    fields = ["course_name", "course_desc", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
-              "grade", "major", "semester", "url", "subject_type", "reviews"]
-    resp = es.search(index=index, query=query, fields = fields, source=False)['hits']['hits'][0]
-    #print(resp['fields']['reviews'])
-    # reviews = resp['fields']['reviews'][0].replace("'", '"')
-    # reviews_json = json.loads(reviews)
-    # print(reviews_json)
+    course_index = "course_final"
+    course_fields = ["course_name", "course_desc", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
+                     "grade", "major", "semester", "url", "subject_type"]
+    course_resp = es.search(index=course_index, query=course_query, fields = course_fields, source=False)['hits']['hits'][0]
+    # print(course_resp)
+    review_query = {
 
-    # reviews_json = json.loads(reviews)
-    # review_text --->>> reviews_json[0]["review_text"]
-    return {"lecture": resp}
+        "match": {
+            "id": id
+        }
+
+    }
+
+    review_index = "reviews_sentiment"
+    review_fields = ["posvote", "review_semester", "star", "course_name", "review_text", "ml.inference.predicted_value", "ml.inference.prediction_probability"]
+    # review_resp 이 review 다 들어있는 array.
+    review_resp = es.search(index=review_index, query=review_query, fields = review_fields, source=False)['hits']['hits']
+    #review_resp => reviews 들어있는 array, dictionary로 값 불러올 수 잇음.
+    # print(review_resp[0]['fields']["ml.inference.predicted_value"]) 이런 식으로 값 처리 가능.
+    course = course_resp.get("fields")
+    reviews = []
+    pros_num = 0;
+    cons_num = 0;
+    star_avg = 0;
+    for review in review_resp:
+        review_info = review.get("fields")
+        reviews.append({'pros' : int(review_info.get("ml.inference.prediction_probability")[0] * 100) , 'star' : review_info.get("star")[0] , 'review_text' : review_info.get("review_text")[0] , 'review_semester' : review_info.get('review_semester')[0], 'is_positive' : review_info.get("ml.inference.predicted_value")[0]})
+        star_avg += review_info.get("star")[0]
+        if review_info.get("ml.inference.predicted_value")[0] == "positive":
+            pros_num += 1
+        else:
+            cons_num += 1
+    course["reviews"] = reviews
+    course["pros"] = pros_num
+    course["cons"] = cons_num
+    course["star_avg"] = round(star_avg / (pros_num + cons_num), 2)
+    return course
 
 
 @router.get("/me", response_model=list[Lecture])
