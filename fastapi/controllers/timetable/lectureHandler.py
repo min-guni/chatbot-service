@@ -51,7 +51,7 @@ def save_lecture(lecture: Lecture, session: SessionDep, current_user: CurrentUse
 def get_detail(id: str):
     query = {
         "term" : {
-            "_id": {
+            "id": {
                 "value" : id
             }
         }
