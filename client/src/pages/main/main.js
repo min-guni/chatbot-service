@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ChatBot from '../../components/chatbot/chatbot';
 import EditTable from '../../components/timetable/editTable';
@@ -11,7 +10,6 @@ const Main = () => {
   return (
     <div>
       {menu === 'ChatBot' && <ChatBot />}
-      {menu === 'Dashboard' && <Dashboard />}
       {menu === 'Timetable' && <EditTable />}
 
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
