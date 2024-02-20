@@ -66,7 +66,7 @@ const LectureDialog = ({ lectureId, dialogOpen, setDialogOpen }) => {
   }, []);
 
   return (
-    <div style={{ height: 60 + `vh` }}>
+    <div>
       <Dialog
         open={dialogOpen}
         onClose={() => {
@@ -76,7 +76,7 @@ const LectureDialog = ({ lectureId, dialogOpen, setDialogOpen }) => {
         aria-describedby="alert-dialog-description"
         maxWidth="lg"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle fontWeight="bold" id="alert-dialog-title">
           <Grid container columns={32}>
             <Grid item xs={31}>
               <Typography variant="h5">{lectureInfo.course_name}</Typography>

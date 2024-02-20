@@ -28,7 +28,6 @@ const EditTable = () => {
   const navigate = useNavigate();
   const [userLectureList, setUserLectureList] = useState([]);
   const [lectureList, setLectureList] = useState([]);
-  const [priorityLecture, setPriorityLecture] = useState(null);
 
   const [open, setOpen] = useState(false);
 
@@ -104,22 +103,16 @@ const EditTable = () => {
           />
         </Toolbar>
       </AppBar>
-      <TimeTable lectureList={userLectureList} priority_lecture={priorityLecture} />
+      <TimeTable lectureList={userLectureList} />
       <Dialog
         open={open}
         onClose={() => {
           setOpen(false);
         }}
-        fullWidth="lg"
-        maxWidth="lg"
-        PaperProps={{
-          style: {
-            backgroundColor:
-              priorityLecture !== null ? 'rgba(255, 255, 255, 0)' : 'rgba(255, 255, 255, 1)', // Adjust the alpha value for transparency
-          },
-        }}
+        fullWidth="md"
+        maxWidth="md"
       >
-        <DialogTitle>Search Lectures</DialogTitle>
+        <DialogTitle fontWeight="bold"> 강의 검색</DialogTitle>
         <DialogContent dividers>
           <TextField
             hiddenLabel
@@ -138,7 +131,6 @@ const EditTable = () => {
           />
           <LectureList
             lectureList={lectureList}
-            updateInstanceLecture={setPriorityLecture}
             setUserLectureList={setUserLectureList}
             saveLecture={save}
           ></LectureList>

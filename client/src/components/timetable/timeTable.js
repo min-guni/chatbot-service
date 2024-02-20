@@ -11,7 +11,7 @@ import {
 
 import { lightBlue, blueGrey, lightGreen, grey, cyan, brown } from '@mui/material/colors';
 
-const TimeTable = ({ lectureList, priority_lecture }) => {
+const TimeTable = ({ lectureList }) => {
   const daysOfWeek = ['월', '화', '수', '목', '금'];
   const dayMap = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
   const colorList = [grey[300], lightBlue[300], lightGreen[300], cyan[300], brown[300]];
@@ -46,10 +46,6 @@ const TimeTable = ({ lectureList, priority_lecture }) => {
     lectureList.map((lecture, index) => {
       parseLectureTime(lecture.schedule, index);
     });
-    console.log(priority_lecture);
-    if (priority_lecture !== null) {
-      parseLectureTime(priority_lecture.schedule, -1);
-    }
 
     return (
       <TableContainer component={Paper} style={{ width: '100vw' }}>
@@ -87,11 +83,7 @@ const TimeTable = ({ lectureList, priority_lecture }) => {
       time_index === 0 ||
       timeList[day_index][time_index - 1] !== timeList[day_index][time_index]
     ) {
-      if (timeList[day_index][time_index] === 0) {
-        message = priority_lecture.course_name;
-      } else {
-        message = lectureList[timeList[day_index][time_index] - 1].course_name;
-      }
+      message = lectureList[timeList[day_index][time_index] - 1].course_name;
     }
 
     return (

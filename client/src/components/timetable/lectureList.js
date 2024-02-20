@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -11,11 +11,20 @@ import {
   Typography,
   Button,
   AccordionActions,
+  Card,
+  CardContent,
+  Chip,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LectureDialog from './lectureDialog';
+import Grid from '@mui/material/Grid';
+import NumbersIcon from '@mui/icons-material/Numbers';
+import PersonIcon from '@mui/icons-material/Person';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import Face6Icon from '@mui/icons-material/Face6';
+import Avatar from '@mui/material/Avatar';
 
-const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList, saveLecture }) => {
+const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [detailLecture, setDetailLecture] = useState(null);
@@ -32,69 +41,81 @@ const LectureList = ({ lectureList, updateInstanceLecture, setUserLectureList, s
     console.log(index);
   };
 
-  const [isHover, setIsHover] = useState(true);
-
   useEffect(() => {
     setExpandedDiv(false);
   }, [lectureList]);
 
   return (
     <div style={{ height: 60 + `vh`, marginTop: 20 }}>
-      {lectureList.map((lecture, index) => (
-        <Accordion
-          //elevation={0}
-          key={index}
-          expanded={expandedDiv === index}
-          onChange={handleExpandChange(index)}
-          sx={{
-            backgroundColor: isHover ? 'rgba(255, 255, 255, 0)' : 'rgba(255, 255, 255, 1)', // Adjust the alpha value for transparency
-            //border: '10px solid #000000'',
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-${index}-content`}
-            id={`panel-${index}-header`}
+      <Card
+        elevation="0"
+        sx={{
+          marginTop: 1,
+          marginBottom: 1,
+        }}
+      >
+        <Grid container>
+          <Grid item xs={2.35}>
+            <Chip sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
+          </Grid>
+          <Grid item xs={3.4}>
+            <Chip
+              sx={{ paddingLeft: 2, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }}
+              icon={<ImportContactsIcon />}
+              label="강의명"
+              color="primary"
+            />
+          </Grid>
+          <Grid item>
+            <Chip sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
+              교수명
+            </Chip>
+          </Grid>
+        </Grid>
+      </Card>
+      <div>
+        {lectureList.map((lecture, index) => (
+          <Accordion
+            key={index}
+            expanded={expandedDiv === index}
+            onChange={handleExpandChange(index)}
           >
-            <Typography sx={{ width: '20%', flexShrink: 0 }}>
-              {lecture.course_code + ' '}
-            </Typography>
-            <Typography sx={{ width: '20%', flexShrink: 0 }}>
-              {lecture.course_name + ' '}
-            </Typography>
-            <Typography>{lecture.instructor + ' '}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{lecture.source_code}</Typography>
-            <Typography>{lecture.classroom}</Typography>
-            <Typography>{lecture.caution}</Typography>
-          </AccordionDetails>
-          <AccordionActions>
-            <Button
-              onClick={() => {
-                setDetailLecture(lecture.id);
-                setOpenDialog(true);
-              }}
-            >
-              Show Detail
-            </Button>
-            <Button
-              onClick={() => {
-                setUserLectureList((list) => [...list, lecture]); //여기서 체크 해야됨;;
-                saveLecture(lecture);
-                handleOpen(index);
-              }}
-              onMouseOver={() => {
-                updateInstanceLecture(lecture);
-                setIsHover(true);
-              }}
-              onMouseOut={() => updateInstanceLecture(null)}
-            >
-              Add to Table
-            </Button>
-          </AccordionActions>
-        </Accordion>
-      ))}
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`panel-${index}-header`}>
+              <Typography sx={{ width: '20%', flexShrink: 0 }}>
+                {lecture.course_code + ' '}
+              </Typography>
+              <Typography sx={{ width: '30%', flexShrink: 0 }}>
+                {lecture.course_name + ' '}
+              </Typography>
+              <Typography>{lecture.instructor + ' '}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{'강의 시간 : ' + lecture.schedule}</Typography>
+              <Typography>{'강의실 : ' + lecture.classroom}</Typography>
+              <Typography>{'주의 사항 : ' + lecture.caution}</Typography>
+            </AccordionDetails>
+            <AccordionActions>
+              <Button
+                onClick={() => {
+                  setDetailLecture(lecture.id);
+                  setOpenDialog(true);
+                }}
+              >
+                Show Detail
+              </Button>
+              <Button
+                onClick={() => {
+                  setUserLectureList((list) => [...list, lecture]); //여기서 체크 해야됨;;
+                  saveLecture(lecture);
+                  handleOpen(index);
+                }}
+              >
+                Add to Table
+              </Button>
+            </AccordionActions>
+          </Accordion>
+        ))}
+      </div>
       {detailLecture !== null ? (
         <LectureDialog
           lectureId={detailLecture}
