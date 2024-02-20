@@ -14,6 +14,11 @@ import {
   Card,
   CardContent,
   Chip,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Divider,
+  List,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LectureDialog from './lectureDialog';
@@ -23,6 +28,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import Face6Icon from '@mui/icons-material/Face6';
 import Avatar from '@mui/material/Avatar';
+import ErrorIcon from '@mui/icons-material/Error';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 
 const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
@@ -90,9 +98,38 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
               <Typography>{lecture.instructor + ' '}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{'강의 시간 : ' + lecture.schedule}</Typography>
-              <Typography>{'강의실 : ' + lecture.classroom}</Typography>
-              <Typography>{'주의 사항 : ' + lecture.caution}</Typography>
+              <List>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar sx={{ color: 'black', bgcolor: 'white' }}>
+                      <AccessAlarmIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText sx={{ color: 'black' }}>
+                    {'강의 시간 : ' + lecture.schedule}
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar sx={{ color: 'black', bgcolor: 'white' }}>
+                      <CorporateFareIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText sx={{ color: 'black' }}>
+                    {'강의실 : ' + lecture.classroom}
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar sx={{ color: 'black', bgcolor: 'white' }}>
+                      <ErrorIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText sx={{ color: 'black' }}>
+                    {'주의사항 : ' + lecture.caution}
+                  </ListItemText>
+                </ListItem>
+              </List>
             </AccordionDetails>
             <AccordionActions>
               <Button
