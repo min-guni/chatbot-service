@@ -49,7 +49,7 @@ def save_lecture(lecture: Lecture, session: SessionDep, current_user: CurrentUse
 
 @router.get("/detail/{id}")
 def get_detail(id: str):
-        query = {
+    query = {
         "term" : {
             "_id": {
                 "value" : id
@@ -60,7 +60,7 @@ def get_detail(id: str):
     fields = ["course_name", "course_desc", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
               "grade", "major", "semester", "url", "subject_type", "reviews"]
     resp = es.search(index=index, query=query, fields = fields, source=False)['hits']['hits'][0]
-    # print(resp['fields']['reviews'])
+    #print(resp['fields']['reviews'])
     # reviews = resp['fields']['reviews'][0].replace("'", '"')
     # reviews_json = json.loads(reviews)
     # print(reviews_json)

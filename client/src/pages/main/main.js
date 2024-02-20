@@ -4,7 +4,6 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ChatBot from '../../components/chatbot/chatbot';
-import Dashboard from '../../components/dashboard/dashboard';
 import EditTable from '../../components/timetable/editTable';
 const Main = () => {
   const [menu, setMenu] = useState('ChatBot');
@@ -24,7 +23,6 @@ const Main = () => {
           }}
         >
           <BottomNavigationAction label="ChatBot" value="ChatBot" icon={<SmartToyIcon />} />
-          <BottomNavigationAction label="Dashboard" value="Dashboard" icon={<DashboardIcon />} />
           <BottomNavigationAction
             label="Timetable"
             value="Timetable"
