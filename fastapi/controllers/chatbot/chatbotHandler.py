@@ -17,7 +17,6 @@ def handle_chatbot_message(session: SessionDep, message: Chat, current_user: Cur
     save(session, current_user.username, message, False)
     chatbot_message = rag(message.message)
     save(session, current_user.username, Chat(message=chatbot_message), True)
-    print(chatbot_message)
     return chatbot_message
 
 

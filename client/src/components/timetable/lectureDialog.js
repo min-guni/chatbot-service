@@ -39,7 +39,6 @@ const LectureDialog = ({ lectureId, dialogOpen, setDialogOpen }) => {
   useEffect(() => {
     loadLectureDetail(lectureId)
       .then((res) => {
-        console.log(res.data);
         setLectureInfo(res.data);
       })
       .catch((err) => {
@@ -153,7 +152,12 @@ const LectureDialog = ({ lectureId, dialogOpen, setDialogOpen }) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={3}>
-                            <Rating name="read-only" value={lectureInfo.star_avg} readOnly />
+                            <Rating
+                              name="read-only"
+                              value={lectureInfo.star_avg}
+                              precision={0.1}
+                              readOnly
+                            />
                           </Grid>
                         </Grid>
                         <Paper elevation={0} sx={{ margin: 5 }}>

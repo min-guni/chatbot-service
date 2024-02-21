@@ -25,7 +25,6 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     signin(data)
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem('access_token', res.data.access_token);
         navigate('/');
       })

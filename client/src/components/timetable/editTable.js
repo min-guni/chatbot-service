@@ -29,6 +29,9 @@ import { debounce } from 'lodash';
 import SearchIcon from '@mui/icons-material/Search';
 import LectureList from './lectureList';
 import { useNavigate } from 'react-router-dom';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import SchoolIcon from '@mui/icons-material/School';
 
 const EditTable = () => {
   const navigate = useNavigate();
@@ -319,7 +322,7 @@ const EditTable = () => {
               }}
             />
             <Chip
-              icon={<SearchIcon />}
+              icon={<CastForEducationIcon />}
               label={lectureType === null ? '수업 방식' : '수업 방식 : ' + lectureType}
               onClick={(event) => {
                 setOpenMenu('lecture_type');
@@ -327,7 +330,7 @@ const EditTable = () => {
               }}
             />
             <Chip
-              icon={<SearchIcon />}
+              icon={<SchoolIcon />}
               label={course === null ? '전공 선택' : '전공 선택 : ' + major_type[course]}
               onClick={(event) => {
                 setOpenMenu('major');
@@ -335,7 +338,7 @@ const EditTable = () => {
               }}
             />
             <Chip
-              icon={<SearchIcon />}
+              icon={<MenuBookIcon />}
               label={
                 course === null || detailCourse === null
                   ? '세부 전공 선택'
@@ -454,7 +457,6 @@ const EditTable = () => {
                 key={index}
                 onClick={() => {
                   setCourse(index);
-                  console.log(index);
                   setOpenMenu(null);
                   setAnchorEl(null);
                   setDetailCourse(null);

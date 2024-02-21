@@ -60,7 +60,6 @@ def create_gpt_prompt(es_response):
             prompt += f"{comment['Comment']}\n"
         prompt += "\n"
     prompt += "이 정보를 바탕으로 학생의 질문에 답변해주세요: "
-    print(prompt)
     return prompt
 
 

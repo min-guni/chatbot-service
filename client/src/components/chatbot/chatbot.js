@@ -53,7 +53,6 @@ const ChatBot = () => {
       ]);
       postChatBot(message)
         .then((res) => {
-          console.log(res.data);
           setChatList((chatList) => {
             const updatedList = [...chatList];
             updatedList[chatList.length - 1] = { message: res.data, id: 1 };

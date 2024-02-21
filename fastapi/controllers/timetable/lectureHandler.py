@@ -16,7 +16,6 @@ router = APIRouter()
 
 @router.get("/", response_model=list[Lecture])
 def search_lecture(query: str, major: str = '', search_type: str = 'default', result_type: str = ''):  # 강의 탐색
-    print(query,major,search_type,result_type)
     total_query = {
         "bool": {
             "must": [],
@@ -80,8 +79,6 @@ def search_lecture(query: str, major: str = '', search_type: str = 'default', re
     courses = es.search(body=body, index=index)['hits']['hits']
 
     # resp = es.search(index = index, fields=fields,body = body, size=10,min_score=3,  source=False)
-    print(total_query)
-    print("\n\n")
     resp = [course['_source'] for course in courses]
     return resp
 
@@ -90,7 +87,6 @@ def search_lecture(query: str, major: str = '', search_type: str = 'default', re
 @router.post("/")
 def save_lecture(lecture: Lecture, session: SessionDep, current_user: CurrentUser):  # 사용자 강의 저장
     save(session, current_user.username, lecture)
-    print(lecture)
     return "save complete"
 
 
@@ -109,7 +105,6 @@ def get_detail(id: str):
                      "grade", "major", "semester", "url", "subject_type"]
     course_resp = es.search(index=course_index, query=course_query, fields=course_fields, source=False)['hits']['hits'][
         0]
-    # print(course_resp)
     review_query = {
 
         "match": {
@@ -157,8 +152,6 @@ def get_saved_lecture(session: SessionDep, current_user: CurrentUser):
                        semester=obj_in.semester,
                        grade=obj_in.grade, major=obj_in.major, instructor=obj_in.instructor,
                        schedule=obj_in.schedule) for obj_in in lecture_list]
-    print(lecture_list)
-    print(obj_out)
     return obj_out
 
 
@@ -168,122 +161,3 @@ def delete_lecture(session: SessionDep, current_user: CurrentUser, id: str):
     return "deleted"
 
 
-def search_lecture_english(q: str):  # 강의 탐색
-    query = {
-        "bool": {
-            "must":
-                [
-                    {
-                        "match": {
-                            "caution": "영어강의"
-                        }
-                    },
-
-                    {
-                        "multi_match": {
-                            "query": query_text,
-                            "fields": ["course_name^2", "course_name.course_keyword^2", "course_name.course_english",
-                                       "course_desc", "course_desc.desc_english", "schedule", "instructor"]
-                        }
-                    }
-                ]
-        }
-    }
-    fields = ["course_name", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
-              "grade", "major", "semester", "subject_type"]
-    index = 'course_final'
-    # query parameter
-    resp = es.search(index=index,
-                     query=query,
-                     fields=fields,
-                     size=10,
-                     source=False)
-
-    tops = resp['hits']['hits'][:10]
-
-    lecture_list = [{key: value[0] for key, value in d["fields"].items()} for d in tops]
-    print(lecture_list)
-    # lecture list에 담아서 넘기기
-    return lecture_list
-
-
-def search_lecture_video_blended(q: str):  # 강의 탐색
-    query = {
-        "bool": {
-
-            "must":
-                [{
-                    "multi_match": {
-                        "query": query_text,
-                        "fields": ["course_name^2", "course_name.course_keyword^2", "course_name.course_english",
-                                   "course_desc", "course_desc.desc_english", "schedule", "instructor"]
-                    }
-                }],
-            "must_not": [{
-                "match": {
-                    "caution": " 대면강의"
-                },
-                "match": {
-                    "caution": "대면강의"
-                }
-            }]
-
-        }
-    }
-    fields = ["course_name", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
-              "grade", "major", "semester", "subject_type"]
-    index = 'course_final'
-    # query parameter
-    resp = es.search(index=index,
-                     query=query,
-                     fields=fields,
-                     size=10,
-                     source=False)
-
-    tops = resp['hits']['hits'][:10]
-
-    lecture_list = [{key: value[0] for key, value in d["fields"].items()} for d in tops]
-    print(lecture_list)
-    # lecture list에 담아서 넘기기
-    return lecture_list
-
-
-def search_lecture_korean(q: str):  # 강의 탐색
-    query = {
-        "bool": {
-            "must":
-                [
-                    {
-                        "multi_match": {
-                            "query": query_text,
-                            "fields": ["course_name^2", "course_name.course_keyword^2", "course_name.course_english",
-                                       "course_desc", "course_desc.desc_english", "schedule", "instructor"]
-                        }
-                    }
-                ],
-            "must_not":
-                [
-                    {
-                        "match": {
-                            "caution": "영어강의"
-                        }
-                    }
-                ]
-        }
-    }
-    fields = ["course_name", "course_code", "schedule", "instructor", "campus", "caution", "classroom",
-              "grade", "major", "semester", "subject_type"]
-    index = 'course_final'
-    # query parameter
-    resp = es.search(index=index,
-                     query=query,
-                     fields=fields,
-                     size=10,
-                     source=False)
-
-    tops = resp['hits']['hits'][:10]
-
-    lecture_list = [{key: value[0] for key, value in d["fields"].items()} for d in tops]
-    print(lecture_list)
-    # lecture list에 담아서 넘기기
-    return lecture_list
