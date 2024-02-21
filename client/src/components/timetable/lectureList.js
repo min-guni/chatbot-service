@@ -19,6 +19,8 @@ import {
   ListItemText,
   Divider,
   List,
+  MenuItem,
+  Menu,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LectureDialog from './lectureDialog';
@@ -31,6 +33,7 @@ import Avatar from '@mui/material/Avatar';
 import ErrorIcon from '@mui/icons-material/Error';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import SearchIcon from '@mui/icons-material/Search';
 
 const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
@@ -46,7 +49,6 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
   };
   const handleOpen = (index) => {
     setOpenInfo(index);
-    console.log(index);
   };
 
   useEffect(() => {
@@ -55,33 +57,37 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
 
   return (
     <div style={{ height: 60 + `vh`, marginTop: 20 }}>
-      <Card
-        elevation="0"
-        sx={{
-          marginTop: 1,
-          marginBottom: 1,
-        }}
-      >
-        <Grid container>
-          <Grid item xs={2.35}>
-            <Chip sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
+      {lectureList.length !== 0 ? (
+        <Card
+          elevation="0"
+          sx={{
+            marginTop: 1,
+            marginBottom: 1,
+          }}
+        >
+          <Grid container>
+            <Grid item xs={2.35}>
+              <Chip sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
+            </Grid>
+            <Grid item xs={3.4}>
+              <Chip
+                sx={{ paddingLeft: 2, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }}
+                icon={<ImportContactsIcon />}
+                label="강의명"
+                color="primary"
+              />
+            </Grid>
+            <Grid item>
+              <Chip sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
+                교수명
+              </Chip>
+            </Grid>
           </Grid>
-          <Grid item xs={3.4}>
-            <Chip
-              sx={{ paddingLeft: 2, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }}
-              icon={<ImportContactsIcon />}
-              label="강의명"
-              color="primary"
-            />
-          </Grid>
-          <Grid item>
-            <Chip sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
-              교수명
-            </Chip>
-          </Grid>
-        </Grid>
-      </Card>
-      <div>
+        </Card>
+      ) : (
+        ''
+      )}
+      <div style={{ maxHeight: `calc(60vh - 40px)`, overflowY: 'auto' }}>
         {lectureList.map((lecture, index) => (
           <Accordion
             key={index}

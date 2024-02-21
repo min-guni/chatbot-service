@@ -36,7 +36,6 @@ const TimeTable = ({ lectureList }) => {
     dayTimePairs.forEach((pairString) => {
       const time = pairString.split(/[^0-9]/).filter(Boolean);
       time.map((time) => {
-        console.log(time);
         timeList[dayMap[pairString[0]]][parseInt(time, 10) - 1] = index + 1;
       });
     });
