@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route index element={<Main />} />
           <Route path="/timetable" element={<TimeTable />} />
-          <Route path="/chatbot" element={<ChatBot />} />
+          <Route path="/chatbot" element={Auth{ChatBot, true}}></Route>
           <Route exact path="/" element={Auth(Main, true)}></Route>
           <Route exact path="/signin" element={Auth(SignIn, false)}></Route>
           <Route exact path="/signup" element={Auth(SignUp, false)}></Route>

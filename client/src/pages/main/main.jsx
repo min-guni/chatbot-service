@@ -185,7 +185,7 @@ const Main = () => {
         <SecondWrapper>
           <ClickableBox style={{backgroundColor: '#fdf3f1'}} onClick={() => navigateTo('/chatbot')}>
             <BoxText>
-              <div>챗봇 서비스</div>
+              <div>챗봇 서비스 🤖</div>
               <div style={{fontSize: '23px', textAlign: 'right', marginTop: '20px'}}>학교 생활에 도움이 필요하신가요?</div>
               <div style={{fontSize: '23px', textAlign: 'right'}}>우리의 챗봇이 도움을 줄 거에요.</div>
               <div style={{fontSize: '18px', color: '#8f96a0', textAlign: 'right', marginTop: '20px'}}>무려, 3분 안에 ✍🏻</div>
