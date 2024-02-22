@@ -39,7 +39,6 @@ import TextInput from '../ui/TextInput';
 import Button from '../ui/Button';
 import { animationMixin } from '../effect/Animation';
 
-
 // 글로벌 스타일 설정
 const AllGlobalStyle = createGlobalStyle`
   @font-face {
@@ -56,36 +55,35 @@ const AllGlobalStyle = createGlobalStyle`
 `;
 
 const HighlightText = styled.span`
-    color: #252a2f;
-    background: linear-gradient(to right, #f2f7d3, #f9dcdc);
-    border-radius: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
+  color: #252a2f;
+  background: linear-gradient(to right, #f2f7d3, #f9dcdc);
+  border-radius: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 // 텍스트 및 버튼 스타일
 const MainTitleText = styled.p`
-    font-size: 46px;
-    font-weight: bold;
-    text-align: center;
-    padding-top: 10px;
-    font-family: 'Pretendard-ExtraBold';
-    color: #252a2f;
-    ${animationMixin};
+  font-size: 46px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 10px;
+  font-family: 'Pretendard-ExtraBold';
+  color: #252a2f;
+  ${animationMixin};
 `;
 
 // 페이지 상단의 헤더 박스 스타일
 const HeaderBox = styled.div`
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 40px; /* 높이 조정 */
-    width: 100px;
-    margin-left: 5px;
-    margin-right: 5px;
-    
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40px; /* 높이 조정 */
+  width: 100px;
+  margin-left: 5px;
+  margin-right: 5px;
 `;
 
 // 클릭 가능한 헤더 박스 스타일
@@ -103,7 +101,6 @@ const HeaderBoxTextNone = styled.p`
   text-align: center;
   color: #8c8c8c;
   font-family: 'Pretendard-ExtraBold';
-
 `;
 
 // 메인 레이아웃 스타일링
@@ -139,14 +136,13 @@ const CustomTextInput = styled(TextInput)`
   box-sizing: border-box;
 `;
 
-
 // 커스텀 버튼 스타일
 const CustomButton = styled(Button)`
   padding: 7px 7px;
   font-size: 30px;
   border-radius: 15px;
   cursor: pointer;
-  background: linear-gradient(to right, #f2f7d3, #f9dcdc);;
+  background: linear-gradient(to right, #f2f7d3, #f9dcdc);
   color: white;
   box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
   font-family: 'Pretendard-ExtraBold';
@@ -176,7 +172,7 @@ const SearchWrapper = styled.div`
   align-items: center;
   width: 100%; // Take the full width to center content
   padding: 20px 0; // Add some padding for spacing
-  ${animationMixin}; 
+  ${animationMixin};
 `;
 
 const CustomSearchField = styled(TextField)`
@@ -203,7 +199,6 @@ const CustomChip = styled(Chip)`
     color: #000; // Change text color if needed
   }
 `;
-
 
 const EditTable = () => {
   const navigate = useNavigate();
@@ -371,7 +366,7 @@ const EditTable = () => {
     ['군사학'],
   ];
 
-    // 페이지 이동 함수
+  // 페이지 이동 함수
   const navigateTo = (path) => {
     console.log(`${path} clicked!`);
     navigate(path);
@@ -439,8 +434,6 @@ const EditTable = () => {
     setUserLectureList(newLectureList);
   };
 
-  
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <AllGlobalStyle />
@@ -465,7 +458,7 @@ const EditTable = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon /> 
+                <SearchIcon />
               </InputAdornment>
             ),
           }}
@@ -473,8 +466,8 @@ const EditTable = () => {
           onClick={() => setOpen(true)}
         />
       </SearchWrapper>
-      
-      <TimeTable lectureList={userLectureList} />
+
+      <TimeTable lectureList={userLectureList} setLectureList={setUserLectureList} />
       <Dialog
         open={open}
         onClose={() => {
@@ -498,9 +491,9 @@ const EditTable = () => {
               ),
             }}
           />
-          <Stack direction="row" spacing={2} sx={{ margin: 2 }}  >
-            
-            <Chip style={{ background: '#f9f7f7'}}
+          <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
+            <Chip
+              style={{ background: '#f9f7f7' }}
               icon={<SearchIcon />}
               label={searchType === null ? '검색 종류 : 강의명' : '검색 종류 : 교수명'}
               onClick={(event) => {
@@ -508,7 +501,8 @@ const EditTable = () => {
                 setAnchorEl(event.currentTarget);
               }}
             />
-            <Chip style={{ background: '#f9f7f7'}}
+            <Chip
+              style={{ background: '#f9f7f7' }}
               icon={<CastForEducationIcon />}
               label={lectureType === null ? '수업 방식' : '수업 방식 : ' + lectureType}
               onClick={(event) => {
@@ -516,7 +510,8 @@ const EditTable = () => {
                 setAnchorEl(event.currentTarget);
               }}
             />
-            <Chip style={{ background: '#f9f7f7'}}
+            <Chip
+              style={{ background: '#f9f7f7' }}
               icon={<SchoolIcon />}
               label={course === null ? '전공 선택' : '전공 선택 : ' + major_type[course]}
               onClick={(event) => {
@@ -524,7 +519,8 @@ const EditTable = () => {
                 setAnchorEl(event.currentTarget);
               }}
             />
-            <Chip style={{ background: '#f9f7f7'}}
+            <Chip
+              style={{ background: '#f9f7f7' }}
               icon={<MenuBookIcon />}
               label={
                 course === null || detailCourse === null

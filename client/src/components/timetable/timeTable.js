@@ -1,4 +1,5 @@
 import {
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -6,11 +7,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 import { animationMixin } from '../effect/Animation';
+import { deleteLecture } from '../../service/timeTable/timeTableService';
+import ClearIcon from '@mui/icons-material/Clear';
 
 // 레이아웃 컴포넌트
 const Wrapper = styled.div`
@@ -22,22 +26,29 @@ const Wrapper = styled.div`
   ${animationMixin};
 `;
 
-const TimeTable = ({ lectureList = [] }) => {
+const TimeTable = ({ lectureList = [], setLectureList }) => {
   const daysOfWeek = ['월', '화', '수', '목', '금'];
   const dayMap = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
   const colorList = [
-  'linear-gradient(to right, #ff9a9e, #fad0c4)',
-  'linear-gradient(to right, #a18cd1, #fbc2eb)',
-  'linear-gradient(to right, #fad0c4, #ffd1ff)',
-  'linear-gradient(to right, #ffecd2, #fcb69f)',
-  'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-  'linear-gradient(to right, #d4fc79, #96e6a1)',
-  'linear-gradient(to right, #84fab0, #8fd3f4)',
-  'linear-gradient(to right, #cfd9df, #e2ebf0)',
-  'linear-gradient(to right, #a6c0fe, #f68084)',
-  'linear-gradient(to right, #fccb90, #d57eeb)',
-];
-
+    'linear-gradient(to right, #ff9a9e, #fad0c4)',
+    'linear-gradient(to right, #a18cd1, #fbc2eb)',
+    'linear-gradient(to right, #fad0c4, #ffd1ff)',
+    'linear-gradient(to right, #ffecd2, #fcb69f)',
+    'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+    'linear-gradient(to right, #d4fc79, #96e6a1)',
+    'linear-gradient(to right, #84fab0, #8fd3f4)',
+    'linear-gradient(to right, #cfd9df, #e2ebf0)',
+    'linear-gradient(to right, #a6c0fe, #f68084)',
+    'linear-gradient(to right, #fccb90, #d57eeb)',
+  ];
+  const deleteUserLecture = (index) => {
+    deleteLecture(lectureList[index].id).catch((err) => {
+      console.log(err);
+    });
+    const updatedLectureList = [...lectureList.slice(0, index), ...lectureList.slice(index + 1)];
+    // setLectureList를 사용하여 상태를 업데이트합니다.
+    setLectureList(updatedLectureList);
+  };
   const timeSlots = [
     '9:00-10:00',
     '10:00-11:00',
@@ -70,28 +81,28 @@ const TimeTable = ({ lectureList = [] }) => {
 
     return (
       <Wrapper>
-      <TableContainer component={Paper} style={{ width: '50vw',  display:'flex', height: '50%' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              {daysOfWeek.map((day) => (
-                <TableCell key={day} align="center">
-                  {day}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {timeSlots.map((timeSlot, time_index) => (
-              <TableRow key={timeSlot} style={{ height: '9vh' }}>
-                <TableCell>{timeSlot}</TableCell>
-                {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
+        <TableContainer component={Paper} style={{ width: '50vw', display: 'flex', height: '50%' }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                {daysOfWeek.map((day) => (
+                  <TableCell key={day} align="center">
+                    {day}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {timeSlots.map((timeSlot, time_index) => (
+                <TableRow key={timeSlot} style={{ height: '9vh' }}>
+                  <TableCell>{timeSlot}</TableCell>
+                  {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Wrapper>
     );
   };
@@ -113,8 +124,26 @@ const TimeTable = ({ lectureList = [] }) => {
       <TableCell
         key={`${day_index}-${time_index}`}
         align="center"
-        sx={{ background:colorList[timeList[day_index][time_index] % colorList.length]}}
+        sx={{
+          position: 'relative',
+          background: colorList[timeList[day_index][time_index] % colorList.length],
+        }}
       >
+        {message !== '' ? (
+          <Tooltip
+            title="삭제"
+            sx={{ position: 'absolute', top: 0, right: 0 }}
+            onClick={() => {
+              deleteUserLecture(timeList[day_index][time_index] - 1);
+            }}
+          >
+            <IconButton>
+              <ClearIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          ''
+        )}
         <Typography>{message}</Typography>
       </TableCell>
     );
