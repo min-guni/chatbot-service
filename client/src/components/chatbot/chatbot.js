@@ -111,6 +111,7 @@ const Wrapper_1 = styled.div`
   justify-content: center; 
   padding: 0 20px; 
   max-width: 100%; 
+  ${animationMixin};
 `;
 // 입력 필드와 버튼을 포함하는 래퍼
 const SecondWrapper = styled.div`
@@ -240,7 +241,7 @@ const ChatBot = () => {
         </ClickableBox>
       </HeaderComponent>
       <MainTitleText>
-          <div style={{paddingTop: '15px'}}><HighlightText>챗봇</HighlightText></div>
+          <div style={{paddingTop: '15px'}}>🤖 <HighlightText>챗봇</HighlightText>이 도와드릴게요</div>
       </MainTitleText>
       <Wrapper_1  >
       <SecondWrapper>

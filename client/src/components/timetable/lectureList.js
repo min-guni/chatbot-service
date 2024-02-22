@@ -34,6 +34,22 @@ import ErrorIcon from '@mui/icons-material/Error';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import SearchIcon from '@mui/icons-material/Search';
+import { createGlobalStyle } from 'styled-components';
+
+// 글로벌 스타일 설정
+const AllGlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Pretendard-ExtraBold';
+    src: url('/font/Pretendard-ExtraBold.ttf') format('truetype');
+  }
+  body {
+    font-family: 'Pretendard-ExtraBold';
+  }
+  @font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('/font/Pretendard-Medium.ttf') format('truetype');
+  }
+`;
 
 const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
@@ -57,6 +73,7 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
 
   return (
     <div style={{ height: 60 + `vh`, marginTop: 20 }}>
+      <AllGlobalStyle />
       {lectureList.length !== 0 ? (
         <Card
           elevation="0"
