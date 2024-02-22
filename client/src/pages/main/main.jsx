@@ -5,11 +5,12 @@ import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ChatBot from '../../components/chatbot/chatbot';
 import TimeTable from '../../components/timetable/editTable';
 
+
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 // UI 컴포넌트 및 애니메이션 효과 임포트
-import HeaderComponent from '../../components/ui/HeaderComponent';
+import HeaderComponent from '../../components/ui/MainPageHeader';
 import { animationMixin } from '../../components/effect/Animation';
 
 // 글로벌 스타일 정의
@@ -103,15 +104,58 @@ const ClickableBox = styled(Box)`
   }
 `;
 
+// 헤더 박스 내 텍스트 스타일
+const HeaderBoxTextNone = styled.p`
+  font-size: 16px;
+  text-align: center;
+  color: #8c8c8c;
+  font-family: 'Pretendard-ExtraBold';
+
+`;
+
+// 페이지 상단의 헤더 박스 스타일
+const HeaderBox = styled.div`
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* 높이 조정 */
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+`;
+
+// 클릭 가능한 헤더 박스 스타일
+const LoginClickableBox = styled(HeaderBox)`
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #dcdcdc;
+  }
+`;
+
+
+
 
 const Main = () => {
   const navigate = useNavigate();
-  const [menu, setMenu] = useState('ChatBot');
   const [animate, setAnimate] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('access_token') ? true : false);
   useEffect(() => {
-    // 컴포넌트 마운트 후 애니메이션 활성화
-    setAnimate(true);
+    // Check login status when component mounts
+    setIsLoggedIn(localStorage.getItem('access_token') ? true : false);
   }, []);
+
+  const handleLogout = () => {
+    // Remove the access token from storage to log the user out
+    localStorage.removeItem('access_token');
+    // Update state to reflect the user is now logged out
+    setIsLoggedIn(false);
+    // Redirect user to the homepage or login page after logout
+    navigate('/');
+  };
 
   // 페이지 이동 함수
   const navigateTo = (path) => {
@@ -121,7 +165,17 @@ const Main = () => {
   return (
     <div>
       <AllGlobalStyle />
-      <HeaderComponent />
+      <HeaderComponent>
+        {isLoggedIn ? (
+          <LoginClickableBox onClick={handleLogout}>
+            <HeaderBoxTextNone>로그아웃</HeaderBoxTextNone>
+          </LoginClickableBox>
+        ) : (
+          <LoginClickableBox onClick={() => navigateTo('/signin')}>
+            <HeaderBoxTextNone>로그인</HeaderBoxTextNone>
+          </LoginClickableBox>
+        )}
+      </HeaderComponent>
       <Wrapper>
         <MainTitleText>
           <div>안녕하세요,</div>
