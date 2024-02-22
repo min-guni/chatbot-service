@@ -454,8 +454,8 @@ const EditTable = () => {
         </ClickableBox>
       </HeaderComponent>
       <MainTitleText>
-        <div style={{ paddingTop: '15px' }}>
-          <HighlightText>시간표</HighlightText>
+        <div style={{ paddingTop: '15px' }}>⏰
+          <HighlightText>시간표 검색</HighlightText>을 도와드릴게요
         </div>
       </MainTitleText>
       <SearchWrapper>
