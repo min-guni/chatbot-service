@@ -18,7 +18,7 @@ openAI_client = OpenAI(
 
 sentence_transform_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 chatGPT_model = FINE_TUNED_MODEL
-index_name = "elastictest_vector_final"
+index_name = "elastic_everytime_alias"
 
 
 def top_n_similarity(query):
