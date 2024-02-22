@@ -15,7 +15,17 @@ router = APIRouter()
 @router.post("/", response_model=str)
 def handle_chatbot_message(session: SessionDep, message: Chat, current_user: CurrentUser):
     save(session, current_user.username, message, False)
-    chatbot_message = rag(message.message)
+    try:
+        chatbot_message = rag(message.message)
+        # Ensure chatbot_message is not None and is a string
+        if chatbot_message is None or not isinstance(chatbot_message, str):
+            raise ValueError("Chatbot failed to generate a valid message.")
+    except Exception as e:
+        # Log the error or handle it as needed
+        print(f"Error generating chatbot message: {e}")
+        # Consider returning a default message or handling the error appropriately
+        chatbot_message = "Sorry, I couldn't understand that."
+
     save(session, current_user.username, Chat(message=chatbot_message), True)
     return chatbot_message
 
