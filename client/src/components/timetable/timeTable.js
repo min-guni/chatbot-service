@@ -98,30 +98,31 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
 
     return (
 
+
       <Wrapper>
-        <GlobalStyle />
-      <TableContainer component={Paper} style={{ width: '50vw', display: 'flex', height: '50%' }}>
-          <Table>
-            <TableHead>
-              <TableRow style={{ backgroundColor: '#dadada' }}>
-                <TableCell></TableCell>
-                {daysOfWeek.map((day) => (
-                  <TableCell key={day} align="center">
-                    {day}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {timeSlots.map((timeSlot, time_index) => (
-                <TableRow key={timeSlot} style={{ height: '9vh' }}>
-                  <TableCell style={{ backgroundColor: '#dadada' }}>{timeSlot}</TableCell>
-                  {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
-                </TableRow>
+      <GlobalStyle />
+      <TableContainer component={Paper} style={{ width: '50vw',  display:'flex', height: '50%' }}>
+        <Table>
+          <TableHead>
+            <TableRow style={{ backgroundColor: '#dadada' }}>
+              <TableCell></TableCell>
+              {daysOfWeek.map((day) => (
+                <TableCell key={day} align="center">
+                  {day}
+                </TableCell>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {timeSlots.map((timeSlot, time_index) => (
+              <TableRow key={timeSlot} style={{ height: '9vh' }}>
+                <TableCell style={{ backgroundColor: '#dadada' }}>{timeSlot}</TableCell>
+                {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       </Wrapper>
     );
   };
