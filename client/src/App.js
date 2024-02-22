@@ -16,7 +16,7 @@ function App() {
       <ThemeProvider theme={Theme}>
         <Routes>
           <Route index element={<Main />} />
-          <Route path="/timetable" element={<TimeTable />} />
+          <Route path="/timetable" element={Auth(TimeTable, true)} />
           <Route path="/chatbot" element={Auth(ChatBot, true)} /> {/* Added closing curly brace and fixed syntax error */}
           <Route exact path="/" element={Auth(Main, true)}></Route>
           <Route exact path="/signin" element={Auth(SignIn, false)}></Route>
