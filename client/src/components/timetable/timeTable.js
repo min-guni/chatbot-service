@@ -1,6 +1,7 @@
 import {
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -113,11 +114,13 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
       return <TableCell key={`${day_index}-${time_index}`}></TableCell>;
     }
     let message = '';
+    let position = '';
     if (
       time_index === 0 ||
       timeList[day_index][time_index - 1] !== timeList[day_index][time_index]
     ) {
       message = lectureList[timeList[day_index][time_index] - 1].course_name;
+      position = lectureList[timeList[day_index][time_index] - 1].classroom;
     }
 
     return (
@@ -145,6 +148,7 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
           ''
         )}
         <Typography>{message}</Typography>
+        <Typography variant="body4">{position}</Typography>
       </TableCell>
     );
   };

@@ -136,96 +136,111 @@ const LectureDialog = ({ lectureId, dialogOpen, setDialogOpen }) => {
                     <ListItem sx={{ color: 'black' }}>{lectureInfo.course_desc}</ListItem>
                   </List>
                 </Grid>
-                <Grid item xs={8}>
-                  <List
-                    sx={{
-                      maxHeight: 80 + `vh`,
-                      overflow: 'auto',
-                    }}
-                  >
-                    <ListItem>
-                      <Stack>
-                        <Grid container>
-                          <Grid item xs={9}>
-                            <Typography fontWeight="bold" variant="h5" sx={{ color: 'black' }}>
-                              {'평점 : ' + lectureInfo.star_avg}
-                            </Typography>
+                <Grid
+                  item
+                  xs={8}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {lectureInfo.reviews.length === 0 || lectureInfo.reviews.length === null ? (
+                    <Typography style={{ verticalAlign: 'middle' }} align="center">
+                      해당 강의에 리뷰가 존재하지 않습니다.
+                    </Typography>
+                  ) : (
+                    <List
+                      sx={{
+                        maxHeight: 80 + `vh`,
+                        overflow: 'auto',
+                      }}
+                    >
+                      <ListItem>
+                        <Stack>
+                          <Grid container>
+                            <Grid item xs={9}>
+                              <Typography fontWeight="bold" variant="h5" sx={{ color: 'black' }}>
+                                {'평점 : ' + lectureInfo.star_avg}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                              <Rating
+                                name="read-only"
+                                value={lectureInfo.star_avg}
+                                precision={0.1}
+                                readOnly
+                              />
+                            </Grid>
                           </Grid>
-                          <Grid item xs={3}>
-                            <Rating
-                              name="read-only"
-                              value={lectureInfo.star_avg}
-                              precision={0.1}
-                              readOnly
+                          <Paper elevation={0} sx={{ margin: 5 }}>
+                            <PieChart
+                              series={[
+                                {
+                                  data: [
+                                    { id: 0, value: lectureInfo.pros, label: '긍정' },
+                                    { id: 1, value: lectureInfo.cons, label: '부정' },
+                                  ],
+                                },
+                              ]}
+                              width={400}
+                              height={200}
+                              style={{ margin: 5 }}
                             />
-                          </Grid>
-                        </Grid>
-                        <Paper elevation={0} sx={{ margin: 5 }}>
-                          <PieChart
-                            series={[
-                              {
-                                data: [
-                                  { id: 0, value: lectureInfo.pros, label: '긍정' },
-                                  { id: 1, value: lectureInfo.cons, label: '부정' },
-                                ],
-                              },
-                            ]}
-                            width={400}
-                            height={200}
-                            style={{ margin: 5 }}
-                          />
-                        </Paper>
-                      </Stack>
-                    </ListItem>
-                    {lectureInfo.reviews.map((review, index) => (
-                      <React.Fragment key={index}>
-                        <ListItem
-                          alignItems="flex-start"
-                          sx={{
-                            bgcolor: review.is_positive === 'positive' ? blue[50] : red[50],
-                          }}
-                        >
-                          <ListItemText
-                            primary={
-                              <React.Fragment>
-                                <Grid container xs={16}>
-                                  <Grid item xs={16}>
-                                    <Rating name="read-only" value={review.star} readOnly />
+                          </Paper>
+                        </Stack>
+                      </ListItem>
+                      {lectureInfo.reviews.map((review, index) => (
+                        <React.Fragment key={index}>
+                          <ListItem
+                            alignItems="flex-start"
+                            sx={{
+                              bgcolor: review.is_positive === 'positive' ? blue[50] : red[50],
+                            }}
+                          >
+                            <ListItemText
+                              primary={
+                                <React.Fragment>
+                                  <Grid container xs={16}>
+                                    <Grid item xs={16}>
+                                      <Rating name="read-only" value={review.star} readOnly />
+                                    </Grid>
+                                    <Grid item sx={16}>
+                                      <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body1"
+                                        color="text.primary"
+                                      >
+                                        {review.review_semester}
+                                      </Typography>
+                                    </Grid>
                                   </Grid>
-                                  <Grid item sx={16}>
-                                    <Typography
-                                      sx={{ display: 'inline' }}
-                                      component="span"
-                                      variant="body1"
-                                      color="text.primary"
-                                    >
-                                      {review.review_semester}
-                                    </Typography>
-                                  </Grid>
-                                </Grid>
-                              </React.Fragment>
-                            }
-                            secondary={
-                              <React.Fragment>
-                                <Typography
-                                  style={{
-                                    whiteSpace: 'pre-line',
-                                  }}
-                                  sx={{ display: 'inline' }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {review.review_text}
-                                </Typography>
-                              </React.Fragment>
-                            }
-                          />
-                        </ListItem>
-                        <Divider />
-                      </React.Fragment>
-                    ))}
-                  </List>
+                                </React.Fragment>
+                              }
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    style={{
+                                      whiteSpace: 'pre-line',
+                                    }}
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {review.review_text}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </ListItem>
+                          <Divider />
+                        </React.Fragment>
+                      ))}
+                    </List>
+                  )}
                 </Grid>
               </Grid>
             </DialogContentText>

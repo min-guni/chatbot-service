@@ -139,7 +139,10 @@ def get_detail(id: str):
     course["reviews"] = reviews
     course["pros"] = pros_num
     course["cons"] = cons_num
-    course["star_avg"] = round(star_avg / (pros_num + cons_num), 2)
+    if pros_num + cons_num != 0:
+        course["star_avg"] = round(star_avg / (pros_num + cons_num), 2)
+    else:
+        course["star_avg"] = 0
     return course
 
 

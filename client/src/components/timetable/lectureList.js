@@ -35,20 +35,26 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import SearchIcon from '@mui/icons-material/Search';
 
-const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
+const LectureList = ({ lectureList, setUserLectureList, userLectureList, saveLecture }) => {
   const [expandedDiv, setExpandedDiv] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [detailLecture, setDetailLecture] = useState(null);
+  const [successDialog, setSuccessDialog] = useState(0); // 1은 성공 2는 실패
 
-  const [openInfo, setOpenInfo] = useState(false);
   const handleExpandChange = (panel) => (event, isExpanded) => {
     setExpandedDiv(isExpanded ? panel : false);
   };
-  const handleClose = () => {
-    setOpenInfo(false);
-  };
-  const handleOpen = (index) => {
-    setOpenInfo(index);
+
+  const lecture2formatedList = (lecture_schedule) => {
+    let returnList = [];
+    let dayTimePairs = lecture_schedule.split('/');
+    dayTimePairs.forEach((pairString) => {
+      const time = pairString.split(/[^0-9]/).filter(Boolean);
+      time.forEach((time) => {
+        returnList.push(pairString[0] + time);
+      });
+    });
+    return returnList;
   };
 
   useEffect(() => {
@@ -67,10 +73,23 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
         >
           <Grid container>
             <Grid item xs={2.35}>
-              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}} sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
+              <Chip
+                style={{
+                  background: 'linear-gradient(to right, #f2f7d3, #f9dcdc',
+                  color: '#4f5963',
+                }}
+                sx={{ padding: 1 }}
+                icon={<NumbersIcon />}
+                color="primary"
+                label="학정 번호"
+              />
             </Grid>
             <Grid item xs={3.4}>
-              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}}
+              <Chip
+                style={{
+                  background: 'linear-gradient(to right, #f2f7d3, #f9dcdc',
+                  color: '#4f5963',
+                }}
                 sx={{ paddingLeft: 2, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }}
                 icon={<ImportContactsIcon />}
                 label="강의명"
@@ -78,7 +97,16 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
               />
             </Grid>
             <Grid item>
-              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}} sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
+              <Chip
+                style={{
+                  background: 'linear-gradient(to right, #f2f7d3, #f9dcdc',
+                  color: '#4f5963',
+                }}
+                sx={{ padding: 1 }}
+                icon={<PersonIcon />}
+                label="교수명"
+                color="primary"
+              >
                 교수명
               </Chip>
             </Grid>
@@ -148,9 +176,24 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
               </Button>
               <Button
                 onClick={() => {
-                  setUserLectureList((list) => [...list, lecture]); //여기서 체크 해야됨;;
-                  saveLecture(lecture);
-                  handleOpen(index);
+                  let lecture_schedule = lecture2formatedList(lecture.schedule);
+                  let flag = false;
+
+                  userLectureList.forEach((userLecture) => {
+                    let user_lecture_schedule = lecture2formatedList(userLecture.schedule);
+                    lecture_schedule.forEach((lecture_schudule_element) => {
+                      if (user_lecture_schedule.includes(lecture_schudule_element)) {
+                        setSuccessDialog(2);
+                        flag = true;
+                      }
+                    });
+                  });
+
+                  if (!flag) {
+                    setUserLectureList((list) => [...list, lecture]); //여기서 체크 해야됨;;
+                    saveLecture(lecture);
+                    setSuccessDialog(1);
+                  }
                 }}
               >
                 Add to Table
@@ -168,6 +211,23 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
       ) : (
         ''
       )}
+      {successDialog === 1 || successDialog === 2 ? (
+        <Dialog
+          open={successDialog > 0}
+          onClose={() => {
+            setSuccessDialog(0);
+          }}
+          maxWidth="sm"
+        >
+          <DialogContent>
+            <DialogContentText>
+              {successDialog === 1
+                ? '강의가 시간표에 저장되었습니다.'
+                : '이미 같은 시간에 다른 과목이 있습니다. 해당 과목을 삭제 후 저장해주세요.'}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      ) : null}
     </div>
   );
 };

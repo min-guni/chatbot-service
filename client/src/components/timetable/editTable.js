@@ -676,6 +676,7 @@ const EditTable = () => {
           <LectureList
             lectureList={lectureList}
             setUserLectureList={setUserLectureList}
+            userLectureList={userLectureList}
             saveLecture={save}
           ></LectureList>
         </DialogContent>
