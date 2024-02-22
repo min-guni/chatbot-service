@@ -105,7 +105,13 @@ const Wrapper = styled.div`
   width: 100%;
   ${animationMixin};
 `;
-
+const Wrapper_1 = styled.div`
+  padding-left: 150px; // padding 일관성 있게 조정
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  ${animationMixin};
+`;
 // 입력 필드와 버튼을 포함하는 래퍼
 const SecondWrapper = styled.div`
   display: flex;
@@ -147,12 +153,27 @@ const CustomButton = styled(Button)`
 const ListWrapper = styled.div`
   max-height: 60vh; /* 예시 높이, 필요에 따라 조절 */
   overflow-y: auto;
-  padding: 8px;
-  margin-top: 20px;
+  padding-left: 30px;
+
 `;
-
-
-
+ 
+const Bot_Icon = () => {
+  return (
+    <img src = "../assets/chatbot_logo.png" style={{width: "40px", height: "40px", borderRadius: "50%"}}></img>
+  )
+}
+const User_Icon = () => {
+  return (
+    <img src = "../assets/user_logo.png" style={{width: "40px", height: "40px", borderRadius: "50%"}}></img>
+  )
+}
+const ChatbotVideo = () => {
+  return (
+      <video autoPlay loop style={{width :'700px', height : "auto" , borderRadius : '10px', marginBottom: '30px'}}>
+          <source src="../assets/dynamic_chatbot.mp4" type="video/mp4" />
+      </video>
+  )
+};
 
 const ChatBot = () => {
   const navigate = useNavigate();
@@ -168,13 +189,7 @@ const ChatBot = () => {
     navigate(path);
   };
 
-  const ChatbotVideo = () => {
-    return (
-        <video autoPlay loop style={{width :'700px', height : "auto" , borderRadius : '10px', marginBottom: '30px'}}>
-            <source src="../assets/dynamic_chatbot.mp4" type="video/mp4" />
-        </video>
-    )
-  };
+  
 
   useEffect(() => {
     getChat()
@@ -226,7 +241,7 @@ const ChatBot = () => {
       <MainTitleText>
           <div style={{paddingTop: '15px'}}><HighlightText>챗봇</HighlightText></div>
       </MainTitleText>
-      <Wrapper>
+      <Wrapper_1  >
       <SecondWrapper>
         <ChatbotVideo />
         <ThirdWrapper>
@@ -258,17 +273,17 @@ const ChatBot = () => {
           />
         </ThirdWrapper>
       </SecondWrapper>
-      <ListWrapper>
-        <List>
+      <ListWrapper >
+        <List >
           {chatList.map((message, index) => (
             <React.Fragment key={index}>
-              <ListItem alignItems="flex-start">
+              <ListItem alignItems="flex-start" >
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: message.id === 0 ? blueGrey[500] : lightBlue[600] }}>
-                    {message.id === 0 ? <AccountCircleIcon /> : <SmartToyIcon />}
+                    {message.id === 0 ? <User_Icon /> : <Bot_Icon/>}
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText
+                <ListItemText 
                   primary={
                     <Typography
                       sx={{ display: 'inline' }}
@@ -289,7 +304,7 @@ const ChatBot = () => {
                         color="text.primary"
                       >
                         {message.message === 'loading' ? (
-                          <Box display="flex" alignItems="center" justifyContent="center">
+                          <Box display="flex" alignItems="center" justifyContent="center" >
                             <CircularProgress />
                           </Box>
                         ) : (
@@ -305,7 +320,7 @@ const ChatBot = () => {
           ))}
         </List>
       </ListWrapper>
-      </Wrapper>
+      </Wrapper_1>
       
       <Snackbar
         open={snackBarOpen}
