@@ -65,6 +65,13 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
     'rgba(255, 215, 186, 0.4)', // 연한 오렌지 샤베트
   ];
   
+  const deleteUserLecture = (index) => {
+    deleteLecture(lectureList[index].id).then(() => {
+      setLectureList(lectureList.filter((_, i) => i !== index));
+    });
+  };
+
+
 
   const timeSlots = [
     '9:00-10:00',
@@ -154,7 +161,7 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
             title="삭제"
             sx={{ position: 'absolute', top: 0, right: 0 }}
             onClick={() => {
-              deleteLecture(timeList[day_index][time_index] - 1);
+              deleteUserLecture(timeList[day_index][time_index] - 1);
             }}
           >
             <IconButton>
