@@ -55,7 +55,7 @@ const MainTitleText = styled.p`
   padding-top: 10px;
   padding-bottom: 30px;
   font-family: 'Pretendard-ExtraBold';
-  color: #252a2f;
+  co  r: #252a2f;
 `;
 
 // 하이라이트 텍스트 스타일링

@@ -45,7 +45,7 @@ const ClickableBoxLogo = styled(HeaderLogo)`
 
 // 로고 이미지 스타일링
 const HeaderLogoImage = styled.img`
-  height: 40px;
+  height: 60px;
   width: auto; // 자동 너비
   object-fit: contain; // 비율 유지
 `;
@@ -72,9 +72,9 @@ const HeaderComponent = ({ children }) => {
       <LeftContainer>
         {/* 로고 클릭 시 홈으로 이동 */}
         <ClickableBoxLogo onClick={() => navigateTo('/')}>
-          <HeaderLogoImage src={process.env.PUBLIC_URL + '/logo/logoimg.png'} />
+          <HeaderLogoImage src={process.env.PUBLIC_URL + '/assets/logo.png'} />
         </ClickableBoxLogo>
-        <HeaderText>20's everytime</HeaderText>
+        <HeaderText>20s everytime</HeaderText>
       </LeftContainer>
       <RightContainer>
         {children} {/* 동적으로 RightContainer 내용 렌더링 */}

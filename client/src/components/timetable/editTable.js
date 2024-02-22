@@ -176,6 +176,7 @@ const SearchWrapper = styled.div`
   align-items: center;
   width: 100%; // Take the full width to center content
   padding: 20px 0; // Add some padding for spacing
+  ${animationMixin}; 
 `;
 
 const CustomSearchField = styled(TextField)`

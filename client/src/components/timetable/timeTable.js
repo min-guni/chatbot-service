@@ -8,8 +8,19 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import React from 'react';
+import styled from 'styled-components';
+import { animationMixin } from '../effect/Animation';
 
-import { lightBlue, blueGrey, lightGreen, grey, cyan, brown } from '@mui/material/colors';
+// 레이아웃 컴포넌트
+const Wrapper = styled.div`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 20px;
+  ${animationMixin};
+`;
 
 const TimeTable = ({ lectureList = [] }) => {
   const daysOfWeek = ['월', '화', '수', '목', '금'];
@@ -58,7 +69,8 @@ const TimeTable = ({ lectureList = [] }) => {
     });
 
     return (
-      <TableContainer component={Paper} style={{ width: '100vw' }}>
+      <Wrapper>
+      <TableContainer component={Paper} style={{ width: '50vw',  display:'flex', height: '50%' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -80,6 +92,7 @@ const TimeTable = ({ lectureList = [] }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      </Wrapper>
     );
   };
 
@@ -100,7 +113,7 @@ const TimeTable = ({ lectureList = [] }) => {
       <TableCell
         key={`${day_index}-${time_index}`}
         align="center"
-        sx={{ backgroundColor: colorList[timeList[day_index][time_index]] }}
+        sx={{ background:colorList[timeList[day_index][time_index] % colorList.length]}}
       >
         <Typography>{message}</Typography>
       </TableCell>
