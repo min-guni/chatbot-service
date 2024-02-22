@@ -179,7 +179,7 @@ const Main = () => {
       <Wrapper>
         <MainTitleText>
           <div>안녕하세요,</div>
-          <div style={{paddingTop: '15px'}}><HighlightText>애브리타임 챗봇 서비스</HighlightText></div>
+          <div style={{paddingTop: '15px'}}><HighlightText>이공즈 프로젝트</HighlightText></div>
           <div style={{paddingTop: '15px'}}>입니다.</div>
         </MainTitleText>
         <SecondWrapper>

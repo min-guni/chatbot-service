@@ -74,7 +74,7 @@ const HeaderComponent = ({ children }) => {
         <ClickableBoxLogo onClick={() => navigateTo('/')}>
           <HeaderLogoImage src={process.env.PUBLIC_URL + '/assets/logo.png'} />
         </ClickableBoxLogo>
-        <HeaderText>20s everytime</HeaderText>
+        <HeaderText>이공즈 프로젝트</HeaderText>
       </LeftContainer>
       <RightContainer>
         {children} {/* 동적으로 RightContainer 내용 렌더링 */}
