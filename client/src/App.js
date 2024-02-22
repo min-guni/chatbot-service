@@ -8,12 +8,16 @@ import { Theme } from './theme/theme';
 import SignIn from './pages/session/signin';
 import SignUp from './pages/session/signup';
 import Auth from './service/auth';
+import TimeTable from './components/timetable/editTable';
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={Theme}>
         <Routes>
+          <Route index element={<Main />} />
+          <Route path="/timetable" element={<TimeTable />} />
+          <Route path="/chatbot" element={<ChatBot />} />
           <Route exact path="/" element={Auth(Main, true)}></Route>
           <Route exact path="/signin" element={Auth(SignIn, false)}></Route>
           <Route exact path="/signup" element={Auth(SignUp, false)}></Route>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
-  Button,
   CircularProgress,
   Divider,
   IconButton,
@@ -24,12 +23,158 @@ import { lightBlue, blueGrey } from '@mui/material/colors';
 import { AccountCircle } from '@mui/icons-material';
 import TelegramIcon from '@mui/icons-material/Telegram';
 
+import { useNavigate } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+// 공통 UI 컴포넌트 및 애니메이션 효과 임포트
+import HeaderComponent from '../ui/HeaderComponent';
+import TextInput from '../ui/TextInput';
+import Button from '../ui/Button';
+import { animationMixin } from '../effect/Animation';
+
+// 글로벌 스타일 설정
+const AllGlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Pretendard-ExtraBold';
+    src: url('/font/Pretendard-ExtraBold.ttf') format('truetype');
+  }
+  body {
+    font-family: 'Pretendard-ExtraBold';
+  }
+  @font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('/font/Pretendard-Medium.ttf') format('truetype');
+  }
+`;
+
+const HighlightText = styled.span`
+    color: #252a2f;
+    background: linear-gradient(to right, #f2f7d3, #f9dcdc);
+    border-radius: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+`;
+
+// 텍스트 및 버튼 스타일
+const MainTitleText = styled.p`
+    font-size: 46px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    font-family: 'Pretendard-ExtraBold';
+    color: #252a2f;
+    ${animationMixin};
+`;
+
+// 페이지 상단의 헤더 박스 스타일
+const HeaderBox = styled.div`
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* 높이 조정 */
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+`;
+
+// 클릭 가능한 헤더 박스 스타일
+const ClickableBox = styled(HeaderBox)`
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #dcdcdc;
+  }
+`;
+
+// 헤더 박스 내 텍스트 스타일
+const HeaderBoxTextNone = styled.p`
+  font-size: 16px;
+  text-align: center;
+  color: #8c8c8c;
+  font-family: 'Pretendard-ExtraBold';
+
+`;
+
+// 메인 레이아웃 스타일링
+const Wrapper = styled.div`
+  padding-left: 150px; // padding 일관성 있게 조정
+  display: flex;
+  align-items: center;
+  width: 100%;
+  ${animationMixin};
+`;
+
+// 입력 필드와 버튼을 포함하는 래퍼
+const SecondWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 60px
+  justify-content: space-between;
+  height: 30%;
+`;
+
+// 채팅 메시지 입력과 전송 버튼 컨테이너
+const ThirdWrapper = styled.div`
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  width: 700px;
+  height: 100%;
+`;
+
+// 커스텀 텍스트 입력 필드 스타일
+const CustomTextInput = styled(TextInput)`
+  flex: 1;
+  box-sizing: border-box;
+`;
+
+
+// 커스텀 버튼 스타일
+const CustomButton = styled(Button)`
+  padding: 7px 7px;
+  font-size: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  background: linear-gradient(to right, #f2f7d3, #f9dcdc);
+  color: white;
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Pretendard-ExtraBold';
+  height: 100px;
+`;
+
+const ListWrapper = styled.div`
+  max-height: 60vh; /* 예시 높이, 필요에 따라 조절 */
+  overflow-y: auto;
+  padding: 8px;
+  margin-top: 20px;
+`;
+
+
+
+
 const ChatBot = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('User');
   const [chatList, setChatList] = useState([]); // id : 0 -> me 1 -> Bot
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+
+   // 페이지 이동 함수
+  const navigateTo = (path) => {
+    console.log(`${path} clicked!`);
+    navigate(path);
+  };
+
+  const ChatbotVideo = () => {
+    return (
+        <video autoPlay loop style={{width :'700px', height : "auto" , borderRadius : '10px', marginBottom: '30px'}}>
+            <source src="../assets/dynamic_chatbot.mp4" type="video/mp4" />
+        </video>
+    )
+  };
 
   useEffect(() => {
     getChat()
@@ -67,16 +212,53 @@ const ChatBot = () => {
   };
 
   return (
-    <div style={{ margin: 'auto' }}>
-      <Paper
-        elevation={0}
-        style={{
-          overflowY: 'auto',
-          height: `calc(100vh - 117px)`,
-          paddingLeft: 200,
-          paddingRight: 200,
-        }}
-      >
+    <div>
+      <AllGlobalStyle />
+      <HeaderComponent>
+        {/* HeaderComponent의 RightContainer에 들어갈 내용을 children으로 전달 */}
+        <ClickableBox onClick={() => navigateTo('/chatbot')}>
+          <HeaderBoxTextNone>챗봇</HeaderBoxTextNone>
+        </ClickableBox>
+        <ClickableBox onClick={() => navigateTo('/timetable')}>
+          <HeaderBoxTextNone>시간표</HeaderBoxTextNone>
+        </ClickableBox>
+      </HeaderComponent>
+      <MainTitleText>
+          <div style={{paddingTop: '15px'}}><HighlightText>챗봇</HighlightText></div>
+      </MainTitleText>
+      <Wrapper>
+      <SecondWrapper>
+        <ChatbotVideo />
+        <ThirdWrapper>
+          <CustomTextInput
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && inputValue.trim() !== '') {
+                if (loading) {
+                  setSnackBarOpen(true);
+                  return;
+                }
+                sendQuery(inputValue);
+                setInputValue('');
+              }
+            }}
+          />
+          <CustomButton title='🔍'
+            onClick={() => {
+              if (inputValue.trim() !== '') {
+                if (loading) {
+                  setSnackBarOpen(true);
+                  return;
+                }
+                sendQuery(inputValue);
+                setInputValue('');
+              }
+            }}
+          />
+        </ThirdWrapper>
+      </SecondWrapper>
+      <ListWrapper>
         <List>
           {chatList.map((message, index) => (
             <React.Fragment key={index}>
@@ -122,48 +304,9 @@ const ChatBot = () => {
             </React.Fragment>
           ))}
         </List>
-        <TextField
-          value={inputValue}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && inputValue.trim() !== '') {
-              if (loading) {
-                setSnackBarOpen(true);
-                return;
-              }
-              sendQuery(inputValue);
-              e.target.value = '';
-            }
-          }}
-          onChange={(e) => setInputValue(e.target.value)}
-          sx={{ position: 'fixed', bottom: 61, left: 200, right: 200 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle fontSize="large" />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => {
-                    if (inputValue.trim() !== '') {
-                      if (loading) {
-                        setSnackBarOpen(true);
-                        return;
-                      }
-                      sendQuery(inputValue);
-                      setInputValue('');
-                    }
-                  }}
-                  sx={{ color: blueGrey[500] }}
-                >
-                  <TelegramIcon fontSize="large" />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Paper>
+      </ListWrapper>
+      </Wrapper>
+      
       <Snackbar
         open={snackBarOpen}
         onClose={() => {

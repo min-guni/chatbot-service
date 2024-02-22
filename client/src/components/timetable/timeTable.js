@@ -11,10 +11,21 @@ import {
 
 import { lightBlue, blueGrey, lightGreen, grey, cyan, brown } from '@mui/material/colors';
 
-const TimeTable = ({ lectureList }) => {
+const TimeTable = ({ lectureList = [] }) => {
   const daysOfWeek = ['월', '화', '수', '목', '금'];
   const dayMap = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
-  const colorList = [grey[300], lightBlue[300], lightGreen[300], cyan[300], brown[300]];
+  const colorList = [
+  'linear-gradient(to right, #ff9a9e, #fad0c4)',
+  'linear-gradient(to right, #a18cd1, #fbc2eb)',
+  'linear-gradient(to right, #fad0c4, #ffd1ff)',
+  'linear-gradient(to right, #ffecd2, #fcb69f)',
+  'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+  'linear-gradient(to right, #d4fc79, #96e6a1)',
+  'linear-gradient(to right, #84fab0, #8fd3f4)',
+  'linear-gradient(to right, #cfd9df, #e2ebf0)',
+  'linear-gradient(to right, #a6c0fe, #f68084)',
+  'linear-gradient(to right, #fccb90, #d57eeb)',
+];
 
   const timeSlots = [
     '9:00-10:00',

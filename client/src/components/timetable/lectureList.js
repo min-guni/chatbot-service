@@ -67,10 +67,10 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
         >
           <Grid container>
             <Grid item xs={2.35}>
-              <Chip sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
+              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}} sx={{ padding: 1 }} icon={<NumbersIcon />} color="primary" label="학정 번호" />
             </Grid>
             <Grid item xs={3.4}>
-              <Chip
+              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}}
                 sx={{ paddingLeft: 2, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }}
                 icon={<ImportContactsIcon />}
                 label="강의명"
@@ -78,7 +78,7 @@ const LectureList = ({ lectureList, setUserLectureList, saveLecture }) => {
               />
             </Grid>
             <Grid item>
-              <Chip sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
+              <Chip style={{background: 'linear-gradient(to right, #f2f7d3, #f9dcdc', color: '#4f5963'}} sx={{ padding: 1 }} icon={<PersonIcon />} label="교수명" color="primary">
                 교수명
               </Chip>
             </Grid>
