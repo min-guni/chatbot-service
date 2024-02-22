@@ -21,6 +21,8 @@ import {
   List,
   MenuItem,
   Menu,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LectureDialog from './lectureDialog';
@@ -229,21 +231,37 @@ const LectureList = ({ lectureList, setUserLectureList, userLectureList, saveLec
         ''
       )}
       {successDialog === 1 || successDialog === 2 ? (
-        <Dialog
+        <Snackbar
           open={successDialog > 0}
+          autoHideDuration={6000}
           onClose={() => {
             setSuccessDialog(0);
           }}
-          maxWidth="sm"
         >
-          <DialogContent>
-            <DialogContentText>
-              {successDialog === 1
-                ? '강의가 시간표에 저장되었습니다.'
-                : '이미 같은 시간에 다른 과목이 있습니다. 해당 과목을 삭제 후 저장해주세요.'}
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
+          {successDialog === 1 ? (
+            <Alert
+              onClose={() => {
+                setSuccessDialog(0);
+              }}
+              severity="success"
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              강의가 시간표에 저장되었습니다.
+            </Alert>
+          ) : (
+            <Alert
+              onClose={() => {
+                setSuccessDialog(0);
+              }}
+              severity="error"
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              이미 같은 시간에 다른 과목이 있습니다. 해당 과목을 삭제 후 저장해주세요.
+            </Alert>
+          )}
+        </Snackbar>
       ) : null}
     </div>
   );
