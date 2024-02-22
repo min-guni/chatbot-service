@@ -18,7 +18,6 @@ import { deleteLecture } from '../../service/timeTable/timeTableService';
 import ClearIcon from '@mui/icons-material/Clear';
 import { createGlobalStyle } from 'styled-components';
 
-
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Noto Sans KR', sans-serif;
@@ -65,14 +64,12 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
     'rgba(255, 239, 213, 0.4)', // 파파야
     'rgba(255, 215, 186, 0.4)', // 연한 오렌지 샤베트
   ];
-  
+
   const deleteUserLecture = (index) => {
     deleteLecture(lectureList[index].id).then(() => {
       setLectureList(lectureList.filter((_, i) => i !== index));
     });
   };
-
-
 
   const timeSlots = [
     '9:00-10:00',
@@ -105,32 +102,35 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
     });
 
     return (
-
-
       <Wrapper>
-      <GlobalStyle />
-      <TableContainer component={Paper} style={{ width: '50vw',  display:'flex', height: '50%' }}>
-        <Table>
-          <TableHead>
-            <TableRow style={{ backgroundColor: '#dadada' }}>
-              <TableCell></TableCell>
-              {daysOfWeek.map((day) => (
-                <TableCell key={day} align="center">
-                  {day}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {timeSlots.map((timeSlot, time_index) => (
-              <TableRow key={timeSlot} style={{ height: '9vh' }}>
-                <TableCell style={{ backgroundColor: '#dadada' }}>{timeSlot}</TableCell>
-                {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
+        <GlobalStyle />
+        <TableContainer component={Paper} style={{ width: '80vw', display: 'flex', height: '50%' }}>
+          <Table>
+            <TableHead>
+              <TableRow style={{ backgroundColor: '#dadada' }}>
+                <TableCell></TableCell>
+                {daysOfWeek.map((day) => (
+                  <TableCell key={day} align="center">
+                    {day}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {timeSlots.map((timeSlot, time_index) => (
+                <TableRow key={timeSlot} style={{ height: '9vh' }}>
+                  <TableCell
+                    style={{ backgroundColor: '#dadada', minWidth: 5 + `vw` }}
+                    align="center"
+                  >
+                    {timeSlot}
+                  </TableCell>
+                  {daysOfWeek.map((day, day_index) => renderLecturesForCell(day_index, time_index))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Wrapper>
     );
   };
@@ -138,7 +138,12 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
   // 시간표에 수업을 렌더링하는 함수
   const renderLecturesForCell = (day_index, time_index) => {
     if (timeList[day_index][time_index] === null) {
-      return <TableCell key={`${day_index}-${time_index}`}></TableCell>;
+      return (
+        <TableCell
+          sx={{ minWidth: 7 + `vw`, maxWidth: 7 + 'vw' }}
+          key={`${day_index}-${time_index}`}
+        ></TableCell>
+      );
     }
     let message = '';
     let position = '';
@@ -155,6 +160,8 @@ const TimeTable = ({ lectureList = [], setLectureList }) => {
         key={`${day_index}-${time_index}`}
         align="center"
         sx={{
+          minWidth: 7 + `vw`,
+          maxWidth: 7 + 'vw',
           position: 'relative',
           background: colorList[timeList[day_index][time_index] % colorList.length],
         }}
