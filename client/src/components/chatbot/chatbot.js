@@ -102,15 +102,15 @@ const Wrapper = styled.div`
   padding-left: 150px; // padding 일관성 있게 조정
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 80%;
   ${animationMixin};
 `;
 const Wrapper_1 = styled.div`
-  padding-left: 150px; // padding 일관성 있게 조정
   display: flex;
   align-items: stretch;
-  width: 100%;
-  ${animationMixin};
+  justify-content: center; 
+  padding: 0 20px; 
+  max-width: 100%; 
 `;
 // 입력 필드와 버튼을 포함하는 래퍼
 const SecondWrapper = styled.div`
@@ -126,7 +126,7 @@ const ThirdWrapper = styled.div`
   display: flex;
   align-items: start;
   justify-content: space-between;
-  width: 700px;
+  width: 600px;
   height: 100%;
 `;
 
@@ -153,8 +153,9 @@ const CustomButton = styled(Button)`
 const ListWrapper = styled.div`
   max-height: 60vh; /* 예시 높이, 필요에 따라 조절 */
   overflow-y: auto;
-  padding-left: 30px;
-
+  padding: 0 20px; 
+  max-width: 500px; 
+  width: 100%; 
 `;
  
 const Bot_Icon = () => {
@@ -169,7 +170,7 @@ const User_Icon = () => {
 }
 const ChatbotVideo = () => {
   return (
-      <video autoPlay loop style={{width :'700px', height : "auto" , borderRadius : '10px', marginBottom: '30px'}}>
+      <video autoPlay loop style={{width :'600px', height : "auto" , borderRadius : '10px', marginBottom: '30px'}}>
           <source src="../assets/dynamic_chatbot.mp4" type="video/mp4" />
       </video>
   )
