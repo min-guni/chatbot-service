@@ -142,17 +142,16 @@ const LoginClickableBox = styled(HeaderBox)`
 const Main = () => {
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('access_token') ? true : false);
   useEffect(() => {
     // Check login status when component mounts
-    setIsLoggedIn(localStorage.getItem('access_token') ? true : false);
+    const token = localStorage.getItem('access_token');
   }, []);
 
   const handleLogout = () => {
     // Remove the access token from storage to log the user out
     localStorage.removeItem('access_token');
     // Update state to reflect the user is now logged out
-    setIsLoggedIn(false);
+    setAnimate(true);
     // Redirect user to the homepage or login page after logout
     navigate('/');
   };
@@ -166,7 +165,7 @@ const Main = () => {
     <div>
       <AllGlobalStyle />
       <HeaderComponent>
-        {isLoggedIn ? (
+        {localStorage.getItem('access_token') ? (
           <LoginClickableBox onClick={handleLogout}>
             <HeaderBoxTextNone>로그아웃</HeaderBoxTextNone>
           </LoginClickableBox>
