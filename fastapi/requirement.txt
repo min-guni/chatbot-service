@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+openai
+sentence_transformers
+elasticsearch
+python-dotenv
+python-jose
