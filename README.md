@@ -1,17 +1,5 @@
-get_url.ipynb -> 특정 카테고리 url 따오기
+# AWS PROJECT
+에브리타임 CHATBOT & 강의 검색 엔진 서비스
 
-url.json -> 결과
-
-url_test.json -> 계정 차단 대비해서 이걸로 test하기
-
-get_detail.ipynb -> 크롤링
-
-cd client
-npm install
-npm start
-연결 하는 axios 코드는 service폴더에 다 있음.
-
-
-
-cd fastapi
-uvicorn main:app --reload
+## STACK
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1715315134814?alt=media&token=64a9d6f7-6778-4fb8-887c-cd484cfea23d)](https://github.com/msdio/stackticon)
